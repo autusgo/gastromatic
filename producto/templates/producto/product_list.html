@@ -1,9 +1,12 @@
-<html>
-    <head>
-        <title>Gastron-O-Matic</title>
-    </head>
-    <body>
-        <p>Hi there!</p>
-        <p>It works!</p>
-    </body>
-</html>
+<div>
+    <h1><a href="/">Gastron-O-Matic</a></h1>
+</div>
+
+{% for producto in productos %}
+    <div>
+        <h2><a href="">{{ producto.nombre }}</a></h2>
+        <p>presentación: {{ producto.presentacion }}</p>
+        <p>${{ producto.precio_unitario}}</p>
+        <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
+    </div>
+{% endfor %}
