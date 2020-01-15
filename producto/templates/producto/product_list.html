@@ -1,12 +1,23 @@
-<div>
-    <h1><a href="/">Gastron-O-Matic</a></h1>
-</div>
+{% load static %}
+<html>
+  <head>
+    <title>Gastron-O-Matic</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/producto.css' %}">
+  </head>
+  <body>
+  <div class="page-header">
+      <h1><a href="/">Gastron-O-Matic</a></h1>
+  </div>
 
-{% for producto in productos %}
-    <div>
-        <h2><a href="">{{ producto.nombre }}</a></h2>
-        <p>presentación: {{ producto.presentacion }}</p>
-        <p>${{ producto.precio_unitario}}</p>
-        <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
-    </div>
-{% endfor %}
+  {% for producto in productos %}
+      <div class="producto">
+          <h2><a href="">{{ producto.nombre }}</a></h2>
+          <p>presentación: {{ producto.presentacion }}</p>
+          <p>precio: ${{ producto.precio_unitario}}</p>
+          <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
+      </div>
+  {% endfor %}
+  </body>
+</html>
