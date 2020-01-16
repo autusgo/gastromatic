@@ -7,6 +7,9 @@
                 {{ producto.published_date }}
             </div>
         {% endif %}
+        {% if user.is_authenticated %}
+             <a class="btn btn-default" href="{% url 'producto_edit' pk=producto.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
         <h2>{{ producto.nombre }}</h2>
         <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
     </div>
