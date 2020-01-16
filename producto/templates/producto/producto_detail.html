@@ -1,0 +1,13 @@
+{% extends 'producto/base.html' %}
+
+{% block content %}
+    <div class="producto">
+        {% if producto.published_date %}
+            <div class="date">
+                {{ producto.published_date }}
+            </div>
+        {% endif %}
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
+    </div>
+{% endblock %}
