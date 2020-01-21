@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'localflavor',
 
     #own
-    'proveedor',
-    'producto',
+    'compras',
+    'pages'
     #'lineadeproducto'
 ]
 

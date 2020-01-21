@@ -1,0 +1,12 @@
+{% extends 'producto/base.html' %}
+
+{% block content %}
+  {% for producto in productos %}
+      <div class="producto">
+          <h2><a href="{% url 'producto_detail' pk=producto.pk %}">{{ producto.nombre }}</a></h2>
+          <p>presentación: {{ producto.presentacion }}</p>
+          <p>precio: ${{ producto.precio_unitario}}</p>
+          <p>{{ producto.unidad_de_medida|linebreaksbr }}</p>
+      </div>
+  {% endfor %}
+{% endblock %}

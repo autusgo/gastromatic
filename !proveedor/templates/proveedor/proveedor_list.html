@@ -1,0 +1,14 @@
+{% extends 'proveedor/base.html' %}
+
+{% block content %}
+  {% for proveedor in proveedores %}
+      <div class="proveedor">
+          <h2><a href="{% url 'proveedor_detail' pk=proveedor.pk %}">{{ proveedor.apellido }}</a></h2>
+          <p>Nombre: {{ proveedor.nombre }}</p>
+          <p>CUIT: {{ proveedor.CUIT}}</p>
+          <p>Teléfono: {{ proveedor.teléfono }}</p>
+          <p>Correo electrónico: {{ proveedor.correo_electrónico }}</p>
+          <p>Dirección: {{ proveedor.dirección|linebreaksbr }}</p>
+      </div>
+  {% endfor %}
+{% endblock %}
