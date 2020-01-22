@@ -3,6 +3,8 @@ from .models import Producto
 from .forms import ProductoForm
 from .models import Proveedor
 from .forms import ProveedorForm
+from .models import Factura
+from .forms import FacturaForm
 from django.shortcuts import redirect
 
 # PRODUCTOS
@@ -86,3 +88,44 @@ def proveedor_remove(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     proveedor.delete()
     return redirect('proveedor_list')
+
+#FACTURAS
+def factura_list(request):
+    facturas = Factura.objects.all().order_by('fecha')
+    return render(request, 'factura/factura_list.html', {'facturas': facturas})
+
+def factura_detail(request, pk):
+    factura = get_object_or_404(Factura, pk=pk)
+    return render(request, 'factura/factura_detail.html', {'factura': factura})
+
+def factura_new(request):
+    if request.method == "POST":
+        form = FacturaForm(request.POST)
+        if form.is_valid():
+            factura = form.save(commit=False)
+            #post.author = request.user
+            #post.published_date = timezone.now()
+            factura.save()
+            return redirect('factura_detail', pk=factura.pk)
+    else:
+        form = FacturaForm()
+    return render(request, 'factura/factura_edit.html', {'form': form})
+
+def factura_edit(request, pk):
+    factura = get_object_or_404(Factura, pk=pk)
+    if request.method == "POST":
+        form = FacturaForm(request.POST, instance=factura)
+        if form.is_valid():
+            factura = form.save(commit=False)
+            #post.author = request.user
+            #post.published_date = timezone.now()
+            factura.save()
+            return redirect('factura_detail', pk=factura.pk)
+    else:
+        form = FacturaForm(instance=factura)
+    return render(request, 'factura/factura_edit.html', {'form': form})
+
+def factura_remove(request, pk):
+    factura = get_object_or_404(Factura, pk=pk)
+    factura.delete()
+    return redirect('factura_list')

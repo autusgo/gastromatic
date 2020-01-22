@@ -5,6 +5,7 @@ from django.conf import settings
 from decimal import Decimal
 from localflavor.ar.forms import ARCUITField
 from phonenumber_field.modelfields import PhoneNumberField
+import datetime
 
 #PRODUCTOS
 class Producto(models.Model):
@@ -47,3 +48,21 @@ class Proveedor(models.Model):
 
     def __str__(self):
         return '{} {} {}'.format(self.CUIT, self.apellido, self.nombre)
+
+#FACTURAS
+class Factura(models.Model):
+    numero = models.CharField(max_length=10, default='1')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.DecimalField(max_digits=5 , decimal_places=0)
+    monto = models.DecimalField(max_digits=9 , decimal_places=2)
+    estado = models.CharField(max_length=50)
+    fecha = models.DateField(default=datetime.date.today)
+
+
+    class Meta:
+        verbose_name_plural = "Facturas"
+
+    def __str__(self):
+        return '{} {} {}'.format(self.numero, self.monto, self.estado)
