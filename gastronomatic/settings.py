@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #third party
-    'localflavor',
+    #'localflavor',
 
     #own
     'compras',
