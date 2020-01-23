@@ -26,7 +26,7 @@ SECRET_KEY = 'xr&zv^9!vku$!z4$$h3aqj^w@8j-rkdcctxkrz84mwj@=)u%7d'
 DEBUG = False
 
 #ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
-ALLOWED_HOSTS = [‘*’]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gastronomatic.azurewebsites.net']
 
 # Application definition
 
