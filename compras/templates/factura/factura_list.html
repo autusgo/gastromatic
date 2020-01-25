@@ -7,8 +7,10 @@
           <p>Proveedor: {{ factura.proveedor }}</p>
           <p>Producto: {{ factura.producto}}</p>
           <p>Cantidad: {{ factura.cantidad }}</p>
-          <p>Precio: {{ factura.precio }}</p>
+          <p>Precio: {{ factura.monto }}</p>
+          <p>Total: {{ factura.total }}</p>
           <p>Estado: {{ factura.estado|linebreaksbr }}</p>
+
       </div>
   {% endfor %}
 {% endblock %}

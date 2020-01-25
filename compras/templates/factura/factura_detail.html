@@ -12,6 +12,7 @@
              <a class="btn btn-default" href="{% url 'factura_remove' pk=factura.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h2>{{ factura.monto }}</h2>
+
         <p>{{ factura.estado|linebreaksbr }}</p>
     </div>
 {% endblock %}

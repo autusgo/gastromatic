@@ -117,7 +117,11 @@ def factura_edit(request, pk):
         form = FacturaForm(request.POST, instance=factura)
         if form.is_valid():
             factura = form.save(commit=False)
-            #post.author = request.user
+            #request.POST.get('monto','')
+            #request.POST.get('cantidad','')
+            #monto = float(monto)
+            #cantidad = float(cantidad)
+            #factura.total = monto * cantidad
             #post.published_date = timezone.now()
             factura.save()
             return redirect('factura_detail', pk=factura.pk)

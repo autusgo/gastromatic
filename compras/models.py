@@ -62,12 +62,12 @@ class Factura(models.Model):
     )
 
     fecha = models.DateField(default=datetime.date.today)
-    numero = models.CharField(max_length=10, default='1')
+    numero = models.CharField(max_length=10, default='0000000000')
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.DecimalField(max_digits=5 , decimal_places=0)
     monto = models.DecimalField(max_digits=9 , decimal_places=2)
-    #total = models.DecimalField(_(u'total'), max_digits=10, decimal_places=2, blank=True, default=0)
+    #total = models.DecimalField(max_digits=5 , decimal_places=2)
     estado = models.CharField(_(u'estado'), choices=FACTURA_ESTADO, max_length=64, default=FACTURA_ESTADO.nopago)
     fecha_de_pago = MonitorField(monitor='estado', when=[FACTURA_ESTADO.pago], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
 
@@ -77,7 +77,7 @@ class Factura(models.Model):
     def __str__(self):
         return '{} {} {}'.format(self.numero, self.monto, self.estado)
 
-    #@property
-    #def total(self):
-        #total = round(self.monto * self.cantidad, 2)
-        #return round(total, 2)
+    @property
+    def total(self):
+        total = round(self.monto * self.cantidad, 2)
+        return round(total, 2)
