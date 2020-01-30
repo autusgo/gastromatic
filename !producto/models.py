@@ -15,7 +15,7 @@ class Producto(models.Model):
         return '{} {}'.format(self.nombre, self.presentacion)
 
 
-class LineaDeProducto(models.Model):
+class Detalle(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.DecimalField(max_digits=5 , decimal_places=0)
     precio = models.DecimalField(max_digits=9 , decimal_places=2)
