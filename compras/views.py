@@ -1,11 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Producto
-from .forms import ProductoForm
-from .models import Proveedor
-from .forms import ProveedorForm
-from .models import Factura
-from .forms import FacturaForm
-from django.shortcuts import redirect
+from .models import *
+from .forms import *
+from django.forms import inlineformset_factory
 
 # PRODUCTOS
 def product_list(request):
