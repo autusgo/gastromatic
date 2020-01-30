@@ -25,6 +25,10 @@ class Producto(models.Model):
     unidad_de_medida = models.CharField(max_length=200, null=True, choices=UNIDAD_DE_MEDIDA)
     stock = models.PositiveIntegerField(null=True)
 
+class Meta:
+    ordering = ('nombre',)
+    index_together = (('tipo', 'nombre'))
+
     def __str__(self):
         return '{} {} {}'.format(self.nombre, self.tipo, self.stock)
 
@@ -41,7 +45,7 @@ class Detalle(models.Model):
         return F(cantidad) * F(precio)
 
     def __str__(self):
-        return '{} {}'.format(self.cantidad, self.producto)
+        return '{} {}'.format(self.cantidad, self.producto.nombre)
 
     #class Meta:
     #    ordering = ['producto']
@@ -60,14 +64,14 @@ class Proveedor(models.Model):
         verbose_name_plural = "Proveedores"
 
     def __str__(self):
-        return '{} {} {}'.format(self.CUIT, self.apellido, self.nombre)
+        return '{} {}'.format(self.apellido, self.nombre)
 
 #FACTURAS
 class Factura(models.Model):
     ESTADO = (
-            ('Paga', 'PAGA'),
-            ('Impaga', 'IMPAGA'),
-            #('Parcial', 'PARCIAL'),
+            ('PAGA', 'PAGA'),
+            ('IMPAGA', 'IMPAGA'),
+            #('PARCIAL', 'PARCIAL'),
             )
 
     fecha = models.DateField(default=datetime.date.today)
@@ -78,8 +82,8 @@ class Factura(models.Model):
     #monto = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
     #total = models.DecimalField(max_digits=5 , decimal_places=2)
     detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
-    estado = models.CharField(max_length=200, choices=ESTADO, default='Impaga')
-    fecha_de_pago = MonitorField(monitor='estado', when=['Impaga'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
+    estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
+    fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
 
     class Meta:
         verbose_name_plural = "Facturas"
