@@ -85,6 +85,11 @@ def proveedor_remove(request, pk):
     proveedor.delete()
     return redirect('proveedor_list')
 
+#DETALLES
+#def detalle_item(request, pk):
+    #producto = get_object_or_404(Producto, pk=pk)
+    #precio_total = get_object_or_404(Detalle, pk=pk)
+
 #FACTURAS
 def factura_list(request):
     facturas = Factura.objects.all().order_by('fecha')
@@ -113,12 +118,6 @@ def factura_edit(request, pk):
         form = FacturaForm(request.POST, instance=factura)
         if form.is_valid():
             factura = form.save(commit=False)
-            #request.POST.get('monto','')
-            #request.POST.get('cantidad','')
-            #monto = float(monto)
-            #cantidad = float(cantidad)
-            #factura.total = monto * cantidad
-            #post.published_date = timezone.now()
             factura.save()
             return redirect('factura_detail', pk=factura.pk)
     else:

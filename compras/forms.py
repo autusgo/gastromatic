@@ -19,4 +19,4 @@ class FacturaForm(forms.ModelForm):
 
     class Meta:
         model = Factura
-        fields = ('fecha','numero','proveedor', 'producto', 'cantidad','monto', 'estado','fecha_de_pago')
+        fields = ('fecha','numero','proveedor', 'detalle', 'estado','fecha_de_pago')
