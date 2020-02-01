@@ -108,6 +108,8 @@ def factura_new(request):
             detalle = detalle_form.save(commit=False)
             #post.author = request.user
             #post.published_date = timezone.now()
+            detalle.subtotal = detalle.total_linea
+            #factura.total = factura.total_detalles
             factura.save()
             detalle.save()
             return redirect('factura_detail', pk=factura.pk)

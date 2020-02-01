@@ -2,13 +2,22 @@
 
 {% block content %}
   {% for factura in facturas %}
-      <div class="factura">
-          <h2><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}</a></h2>
-          <p>Proveedor: {{ factura.proveedor }}</p>
-
-          <p>Total: {{ factura.total }}</p>
-          <p>Estado: {{ factura.estado|linebreaksbr }}</p>
-
-      </div>
+    {% if factura.estado == 'IMPAGA' %}
+        <div class="factura">
+            <h2><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}</a></h2>
+            <p>{{ factura.fecha }}</p>
+            <p>Proveedor: {{ factura.proveedor }}</p>
+            <p>Total: {{ factura.total }}</p>
+            <h3>Estado: {{ factura.estado|linebreaksbr }}</h3>
+        </div>
+    {% else %}
+        <div class="factura">
+            <h2><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}</a></h2>
+            <p>{{ factura.fecha }}</p>
+            <p>Proveedor: {{ factura.proveedor }}</p>
+            <p>Total: {{ factura.total }}</p>
+            <p>Estado: {{ factura.estado|linebreaksbr }}</p>
+        </div>
+    {% endif %}
   {% endfor %}
 {% endblock %}

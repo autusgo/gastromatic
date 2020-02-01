@@ -19,5 +19,5 @@ class FacturaAdmin(admin.ModelAdmin):
 admin.site.register(Factura, FacturaAdmin)
 
 class DetalleAdmin(admin.ModelAdmin):
-    list_display = ['cantidad', 'producto']
+    list_display = ['cantidad', 'producto', 'subtotal']
 admin.site.register(Detalle, DetalleAdmin)

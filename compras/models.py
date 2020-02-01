@@ -48,6 +48,25 @@ class Proveedor(models.Model):
     def __str__(self):
         return '{} {}'.format(self.apellido, self.nombre)
 
+#DETALLE
+class Detalle(models.Model):
+    #factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+
+    @property
+    def total_linea(self):
+        total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
+        return round(total_linea, 2)
+
+
+    def __str__(self):
+        return '{} {} {}'.format(self.cantidad, self.producto.nombre, self.total_linea)
+
+    #class Meta:
+    #    ordering = ['producto']
+
 #FACTURAS
 class Factura(models.Model):
     ESTADO = (
@@ -63,37 +82,19 @@ class Factura(models.Model):
     #cantidad = models.DecimalField(max_digits=5 , null=True, decimal_places=0)
     #monto = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
     #total = models.DecimalField(max_digits=5 , decimal_places=2)
-    #detalle = models.ManyToManyField(Detalle, null=True, blank=True)
+    detalle = models.ManyToManyField(Detalle, null=True, blank=True)
+    #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
+    total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
     class Meta:
         verbose_name_plural = "Facturas"
 
+    # @property
+    # def total_detalles(self):
+    #     total_detalles = self.detalle.total_linea
+    #     return round(total_detalles, 2)
+
     def __str__(self):
         return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)
-
-    #@property
-    #def total(self):
-        #total = round(self.monto * self.cantidad, 2)
-        #return round(total, 2)
-
-#DETALLE
-class Detalle(models.Model):
-    factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField(default=1)
-
-    @property
-    def precio(self):
-        return self.producto.precio_unitario
-
-    @property
-    def precio_total(self):
-        return F(cantidad) * F(precio)
-
-    def __str__(self):
-        return '{} {}'.format(self.cantidad, self.producto.nombre)
-
-    #class Meta:
-    #    ordering = ['producto']
