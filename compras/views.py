@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from .forms import *
 from django.forms import inlineformset_factory
@@ -101,30 +101,46 @@ def factura_detail(request, pk):
 
 def factura_new(request):
     if request.method == "POST":
-        form = FacturaForm(request.POST)
-        if form.is_valid():
-            factura = form.save(commit=False)
+        factura_form = FacturaForm(request.POST)
+        detalle_form = DetalleForm(request.POST)
+        if factura_form.is_valid() and detalle_form.is_valid():
+            factura = factura_form.save(commit=False)
+            detalle = detalle_form.save(commit=False)
             #post.author = request.user
             #post.published_date = timezone.now()
             factura.save()
+            detalle.save()
             return redirect('factura_detail', pk=factura.pk)
     else:
-        form = FacturaForm()
-    return render(request, 'factura/factura_edit.html', {'form': form})
+        factura_form = FacturaForm()
+        detalle_form = DetalleForm()
+    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_form,})
 
 def factura_edit(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     if request.method == "POST":
-        form = FacturaForm(request.POST, instance=factura)
-        if form.is_valid():
-            factura = form.save(commit=False)
+        factura_form = FacturaForm(request.POST, instance=factura)
+        if factura_form.is_valid():
+            factura = factura_form.save(commit=False)
             factura.save()
-            return redirect('factura_detail', pk=factura.pk)
+            return redirect('factura_list', pk=factura.pk)
     else:
-        form = FacturaForm(instance=factura)
-    return render(request, 'factura/factura_edit.html', {'form': form})
+        factura_form = FacturaForm(instance=factura)
+    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form})
 
 def factura_remove(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     factura.delete()
     return redirect('factura_list')
+
+ # def detalle_edit(request, pk):
+ #     detalle = get_object_or_404(Detalle, pk=pk)
+ #     if request.method == "POST":
+ #         form_det = DetalleForm(request.POST, instance=detalle)
+ #         if form_det.is_valid():
+ #             detalle = form_det.save(commit=False)
+ #             detalle.save()
+ #             return redirect('factura_detail', pk=detalle.pk)
+ #     else:
+ #         form_det = DetalleForm(instance=detalle)
+ #     return render(request, 'factura/factura_edit.html', {'form_det': form_det})

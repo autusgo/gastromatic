@@ -15,7 +15,7 @@ class ProveedorAdmin(admin.ModelAdmin):
 admin.site.register(Proveedor, ProveedorAdmin)
 
 class FacturaAdmin(admin.ModelAdmin):
-    list_display = ['fecha', 'numero', 'proveedor', 'detalle', 'estado']
+    list_display = ['fecha', 'numero', 'proveedor', 'estado']
 admin.site.register(Factura, FacturaAdmin)
 
 class DetalleAdmin(admin.ModelAdmin):
