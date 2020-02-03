@@ -4,7 +4,18 @@
     <h2>Nueva Factura</h2>
     <form method="POST" class="factura-form">{% csrf_token %}
         {{ factura_form.as_p }}
-        {{ detalle_form }}
+
+        <div>
+          {{ detalle_form.management_form }}
+          {% for detalle in detalle_form %}
+           <div class="link-formset">
+            {{ detalle }}
+          </div>
+          {% endfor %}
+
+        </div>
+
+
         <button type="submit" class="save btn btn-default">Guardar</button>
     </form>
 {% endblock %}

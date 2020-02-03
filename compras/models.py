@@ -48,22 +48,6 @@ class Proveedor(models.Model):
     def __str__(self):
         return '{} {}'.format(self.apellido, self.nombre)
 
-#DETALLE
-class Detalle(models.Model):
-    #factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField(default=1)
-    subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
-
-    @property
-    def total_linea(self):
-        total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
-        return round(total_linea, 2)
-
-
-    def __str__(self):
-        return '{} {} {}'.format(self.cantidad, self.producto.nombre, self.total_linea)
-
     #class Meta:
     #    ordering = ['producto']
 
@@ -82,8 +66,8 @@ class Factura(models.Model):
     #cantidad = models.DecimalField(max_digits=5 , null=True, decimal_places=0)
     #monto = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
     #total = models.DecimalField(max_digits=5 , decimal_places=2)
-    #detalle = models.ManyToManyField(Detalle, null=True, blank=True)
-    detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
+    productos = models.ManyToManyField(Producto, null=True, blank=True)
+    #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
@@ -98,3 +82,19 @@ class Factura(models.Model):
 
     def __str__(self):
         return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)
+
+#DETALLE
+class Detalle(models.Model):
+    factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+
+    @property
+    def total_linea(self):
+        total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
+        return round(total_linea, 2)
+
+
+    def __str__(self):
+        return '{} {} {}'.format(self.cantidad, self.producto.nombre, self.total_linea)

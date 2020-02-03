@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
-from django.forms import inlineformset_factory
+from django.forms import modelformset_factory
+from django.urls import reverse
 
 # PRODUCTOS
 def product_list(request):
@@ -17,8 +18,6 @@ def producto_new(request):
         form = ProductoForm(request.POST)
         if form.is_valid():
             producto = form.save(commit=False)
-            #post.author = request.user
-            #post.published_date = timezone.now()
             producto.save()
             return redirect('producto_detail', pk=producto.pk)
     else:
@@ -97,28 +96,50 @@ def factura_list(request):
 
 def factura_detail(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
-    return render(request, 'factura/factura_detail.html', {'factura': factura})
+    #factura = Factura.objects.get(pk=pk) #Esto es lo mismo que lo que está arriba pero sin el 404
+    context = {'factura': factura}
+    template = 'factura/factura_detail.html'
+    return render(request, template, context)
 
 def factura_new(request):
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_form = DetalleForm(request.POST)
-        if factura_form.is_valid() and detalle_form.is_valid():
+        detalle_formset = Detalle_Formset(request.POST)
+        if factura_form.is_valid() and detalle_formset.is_valid():
             factura = factura_form.save(commit=False)
-            detalle = detalle_form.save(commit=False)
             #post.author = request.user
             #post.published_date = timezone.now()
-            detalle.subtotal = detalle.total_linea
+            #detalle.subtotal = detalle.total_linea
             #factura.total = factura.total_detalles
+            # subtotal = 0.00
+            # for detalle in factura.productos.all():
+            #     subtotal += float(detalle.precio_unitario)
+            # factura.total = subtotal
             factura.save()
-            detalle.save()
+            for detalles in detalle_formset:
+                detalles.factura_id = factura.pk
+                detalles.save()
             return redirect('factura_detail', pk=factura.pk)
     else:
         factura_form = FacturaForm()
-        detalle_form = DetalleForm()
-    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_form,})
+        Detalle_FormSet=modelformset_factory(Detalle, fields=('producto', 'cantidad'))
+        return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': Detalle_FormSet()} )
 
 def factura_edit(request, pk):
+    # factura = get_object_or_404(Factura, id=3)
+    # producto = get_object_or_404(Producto, pk=pk)
+    # if not producto in factura.productos.all():
+    #     factura.productos.add(producto)
+    # else:
+    #     #factura.detalles.remove(detalle)
+    #     print('el producto no está en la factura')
+    # subtotal = 0.00
+    # for item in factura.productos.all():
+    #     subtotal += float(item.precio_unitario)
+    # factura.total = subtotal
+    # factura.save()
+    # return HttpResponseRedirect(reverse('factura_detail'))
+
     factura = get_object_or_404(Factura, pk=pk)
     if request.method == "POST":
         factura_form = FacturaForm(request.POST, instance=factura)
