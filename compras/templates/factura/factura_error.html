@@ -1,6 +1,10 @@
 {% extends 'factura/base.html' %}
 
 {% block content %}
-<h1>404</h1>
+<h1>ERROR</h1>
 <h2>Metimos la pata</h2>
+
+<p>{{ formset.errors }}</p>
+<p>{{ formset.non_field_errors }}</p>
+
 {% endblock %}

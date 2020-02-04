@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
-from django.forms import modelformset_factory
+from django.forms import formset_factory
 from django.urls import reverse
 
 # PRODUCTOS
@@ -105,9 +105,10 @@ def factura_detail(request, pk):
     return render(request, template, context)
 
 def factura_new(request):
+    DetalleFormSet = formset_factory(DetalleForm, extra=2)
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_formset = DetalleForm(request.POST)
+        detalle_formset = DetalleFormSet(request.POST)
         if factura_form.is_valid() and detalle_formset.is_valid():
             factura = factura_form.save(commit=False)
             #post.author = request.user
@@ -127,7 +128,7 @@ def factura_new(request):
             return redirect('factura_error')
     else:
         factura_form = FacturaForm()
-        detalle_formset=modelformset_factory(Detalle, fields=('producto', 'cantidad'))
+        detalle_formset=formset_factory(DetalleForm, extra=5)
         return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_formset} )
 
 def factura_edit(request, pk):
