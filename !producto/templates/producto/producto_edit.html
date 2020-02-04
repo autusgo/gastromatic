@@ -1,9 +1,0 @@
-{% extends 'producto/base.html' %}
-
-{% block content %}
-    <h2>Nuevo Producto</h2>
-    <form method="POST" class="producto-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Guardar</button>
-    </form>
-{% endblock %}
