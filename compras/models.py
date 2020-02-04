@@ -72,9 +72,6 @@ class Factura(models.Model):
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
-    class Meta:
-        verbose_name_plural = "Facturas"
-
     # @property
     # def total_detalles(self):
     #     total_detalles = self.detalle.total_linea

@@ -20,6 +20,15 @@ class FacturaForm(forms.ModelForm):
         labels = { 'numero': 'Número' }
         help_texts = { 'numero': '0001-00000001' }
 
+class FacturaEditForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ('fecha','numero','proveedor', 'estado')
+        labels = { 'numero': 'Número' }
+    fecha = forms.DateField(disabled=True)
+    proveedor = forms.CharField(disabled=True)
+    numero = forms.CharField(disabled=True)
+
 class DetalleForm(forms.ModelForm):
     class Meta:
         model = Detalle

@@ -148,13 +148,13 @@ def factura_edit(request, pk):
 
     factura = get_object_or_404(Factura, pk=pk)
     if request.method == "POST":
-        factura_form = FacturaForm(request.POST, instance=factura)
+        factura_form = FacturaEditForm(request.POST, instance=factura)
         if factura_form.is_valid():
             factura = factura_form.save(commit=False)
             factura.save()
             return redirect('factura_list', pk=factura.pk)
     else:
-        factura_form = FacturaForm(instance=factura)
+        factura_form = FacturaEditForm(instance=factura)
     return render(request, 'factura/factura_edit.html', {'factura_form': factura_form})
 
 def factura_remove(request, pk):
