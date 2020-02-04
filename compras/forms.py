@@ -16,7 +16,7 @@ class ProveedorForm(forms.ModelForm):
 class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ('fecha','numero','proveedor', 'estado','fecha_de_pago')
+        fields = ('fecha','numero','proveedor', 'estado')
         labels = { 'numero': 'Número' }
         help_texts = { 'numero': '0001-00000001' }
 

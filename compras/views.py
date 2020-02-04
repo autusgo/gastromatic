@@ -90,6 +90,9 @@ def proveedor_remove(request, pk):
     #precio_total = get_object_or_404(Detalle, pk=pk)
 
 #FACTURAS
+def factura_error(request):
+    return render(request, 'factura/factura_error.html')
+
 def factura_list(request):
     facturas = Factura.objects.all().order_by('fecha')
     return render(request, 'factura/factura_list.html', {'facturas': facturas})
@@ -104,7 +107,7 @@ def factura_detail(request, pk):
 def factura_new(request):
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_formset = Detalle_Formset(request.POST)
+        detalle_formset = DetalleForm(request.POST)
         if factura_form.is_valid() and detalle_formset.is_valid():
             factura = factura_form.save(commit=False)
             #post.author = request.user
@@ -120,10 +123,12 @@ def factura_new(request):
                 detalles.factura_id = factura.pk
                 detalles.save()
             return redirect('factura_detail', pk=factura.pk)
+        else:
+            return redirect('factura_error')
     else:
         factura_form = FacturaForm()
-        Detalle_FormSet=modelformset_factory(Detalle, fields=('producto', 'cantidad'))
-        return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': Detalle_FormSet()} )
+        detalle_formset=modelformset_factory(Detalle, fields=('producto', 'cantidad'))
+        return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_formset} )
 
 def factura_edit(request, pk):
     # factura = get_object_or_404(Factura, id=3)
