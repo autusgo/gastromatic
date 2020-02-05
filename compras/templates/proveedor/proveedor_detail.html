@@ -1,17 +1,33 @@
 {% extends 'compras/base.html' %}
 
 {% block content %}
-    <div class="proveedor">
-        {% if proveedor.published_date %}
-            <div class="date">
-                {{ proveedor.published_date }}
-            </div>
-        {% endif %}
-        {% if user.is_authenticated %}
-             <a class="btn btn-default" href="{% url 'proveedor_edit' pk=proveedor.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-             <a class="btn btn-default" href="{% url 'proveedor_remove' pk=proveedor.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-        {% endif %}
-        <h2>{{ proveedor.apellido }}</h2>
-        <p>{{ proveedor.CUIT|linebreaksbr }}</p>
-    </div>
+<header>
+	PROVEEDORES
+</header>
+
+<main>
+  {% if user.is_authenticated %}
+
+  {% endif %}
+
+<form target="_self" class="proveedor">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo">{{ proveedor.apellido }}
+            <a href="{% url 'proveedor_edit' pk=proveedor.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="{% url 'proveedor_remove' pk=proveedor.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+          </div>
+          <div class="grid-item texto">NOMBRE</div>
+          <div class="grid-item">{{ proveedor.nombre }}</div>
+          <div class="grid-item texto">CUIT</div>
+          <div class="grid-item">{{ proveedor.CUIT}}</div>
+          <div class="grid-item texto">DIRECCIÓN</div>
+          <div class="grid-item">{{ proveedor.dirección }}</div>
+          <div class="grid-item texto">TELÉFONO</div>
+          <div class="grid-item">{{ proveedor.teléfono }}</div>
+          <div class="grid-item texto">CORREO ELECTRÓNICO</div>
+          <div class="grid-item">{{ proveedor.correo_electrónico }}</div>
+			</div>
+	</form>
+
+</main>
 {% endblock %}

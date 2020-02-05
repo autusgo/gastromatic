@@ -3,7 +3,7 @@
 {% block content %}
 
 <header>
-	LISTA DE PRODUCTOS
+	FACTURAS
 </header>
 
 <main>
@@ -15,7 +15,7 @@
 			<div class="caja">
      			<div class="grid-item titulo">{{ factura.estado }}
             <a href="{% url 'factura_edit' pk=factura.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a href="{% url 'factura_remove' pk=factura.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            <a href="{% url 'factura_remove' pk=factura.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
           </div>
           <div class="grid-item texto">ESTADO</div>
           <div class="grid-item">{{ factura.estado }}</div>
