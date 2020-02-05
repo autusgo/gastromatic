@@ -1,9 +1,28 @@
-{% extends 'proveedor/base.html' %}
-
+{% extends 'proveedor/base_prov.html' %}
 {% block content %}
-    <h2>Nuevo Proveedor</h2>
-    <form method="POST" class="proveedor-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Guardar</button>
-    </form>
+<header>
+	CARGAR UN NUEVO PROVEEDOR
+</header>
+
+<main>
+<form target="_self"  method="POST" class="proveedor-form">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo">DATOS DEL PROVEEDOR</div>
+
+          <div class="grid-item texto">NOMBRE</div>
+          <div class="grid-item">{{ form.nombre }}</div>
+          <div class="grid-item texto">APELLIDO</div>
+          <div class="grid-item">{{ form.apellido }}</div>
+          <div class="grid-item texto">CUIT</div>
+          <div class="grid-item">{{ form.CUIT }}</div>
+          <div class="grid-item texto">DIRECCIÓN</div>
+          <div class="grid-item">{{ form.dirección }}</div>
+          <div class="grid-item texto">TELÉFONO</div>
+          <div class="grid-item">{{ form.teléfono }}</div>
+          <div class="grid-item texto">EMAIL</div>
+          <div class="grid-item">{{ form.correo_electrónico }}</div>
+			</div>
+		<button class="save btn btn-default">GUARDAR</button>
+	</form>
+</main>
 {% endblock %}

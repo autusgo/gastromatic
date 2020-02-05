@@ -1,27 +1,35 @@
 {% load static %}
+{% load widget_tweaks %}
 <html>
   <head>
-    <title>Gastron-O-Matic</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/compras.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Gastron-O-Matic</title>
   </head>
-  <body>
-      <div class="page-header">
-        {% if user.is_authenticated %}
-          <a href="{% url 'producto_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-        {% endif %}
-          <h1><a href="/">Gastron-O-Matic</a></h1>
-      </div>
-      <div class="content container">
-          <div class="row">
-              <div class="col-md-8">
-              {% block content %}
-              {% endblock %}
-              </div>
-          </div>
-      </div>
+
+<body>
+  <nav>
+  		<div class="menu">
+  		<div class="menuheader">Seleccione una Operación</div>
+  		<div class="botones button1"><a href="{% url 'factura_new' %}">NUEVA FACTURA</a></div>
+      <div class="botones button2"><a href="{% url 'factura_list' %}">VER FACTURAS</a></div>
+  		<div class="botones button3"><a href="{% url 'proveedor_new' %}">NUEVO PROVEEDOR</a></div>
+  		<div class="botones button4"><a href="{% url 'proveedor_list' %}">VER PROVEEDORES</a></div>
+  		<div class="botones button5"><a href="{% url 'producto_new' %}">NUEVO PRODUCTO</a></div>
+  		<div class="botones button6"><a href="{% url 'product_list' %}">VER PRODUCTOS</a></div>
+  	</div>
+  </nav>
+
+  {% block content %}
+  {% endblock %}
+
+  <footer>
+  	Godoy & Bertuzzi Inc. © MMXIX
+  </footer>
+
   </body>
 </html>

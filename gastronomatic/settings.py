@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #third party
     'localflavor',
+    'widget_tweaks',
 
     #own
     'compras',
