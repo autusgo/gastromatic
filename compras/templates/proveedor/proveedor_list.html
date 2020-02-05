@@ -1,14 +1,29 @@
-{% extends 'proveedor/base_prov.html' %}
+{% extends 'compras/base.html' %}
 
 {% block content %}
+<header>
+	LISTA DE PROVEEDORES
+</header>
+
+<main>
   {% for proveedor in proveedores %}
-      <div class="proveedor">
-          <h2><a href="{% url 'proveedor_detail' pk=proveedor.pk %}">{{ proveedor.apellido }}</a></h2>
-          <p>Nombre: {{ proveedor.nombre }}</p>
-          <p>CUIT: {{ proveedor.CUIT}}</p>
-          <p>Teléfono: {{ proveedor.teléfono }}</p>
-          <p>Correo electrónico: {{ proveedor.correo_electrónico }}</p>
-          <p>Dirección: {{ proveedor.dirección|linebreaksbr }}</p>
-      </div>
+
+<form target="_self"  method="POST" class="proveedor">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo"><a href="{% url 'proveedor_detail' pk=proveedor.pk %}">{{ proveedor.apellido }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+
+          <div class="grid-item texto">NOMBRE</div>
+          <div class="grid-item">{{ proveedor.nombre }}</div>
+          <div class="grid-item texto">CUIT</div>
+          <div class="grid-item">{{ proveedor.CUIT}}</div>
+          <div class="grid-item texto">TELÉFONO</div>
+          <div class="grid-item">{{ proveedor.teléfono }}</div>
+          <div class="grid-item texto">DIRECCIÓN</div>
+          <div class="grid-item">{{ proveedor.dirección }}</div>
+          <div class="grid-item texto">CORREO ELECTRÓNICO</div>
+          <div class="grid-item">{{ proveedor.correo_electrónico }}</div>
+			</div>
+	</form>
   {% endfor %}
+</main>
 {% endblock %}

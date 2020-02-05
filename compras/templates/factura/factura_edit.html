@@ -1,21 +1,35 @@
-{% extends 'factura/base.html' %}
+{% extends 'compras/base.html' %}
 
 {% block content %}
-    <h2>Nueva Factura</h2>
-    <form method="POST" class="factura-form">{% csrf_token %}
-        {{ factura_form.as_p }}
+<header>
+	CARGAR UNA NUEVA FACTURA
+</header>
 
-        <div>
-          {{ detalle_form.management_form }}
-          {% for detalle in detalle_form %}
-           <div class="link-formset">
-            {{ detalle }}
-          </div>
-          {% endfor %}
+<main>
+<form target="_self"  method="POST" class="factura-form">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo">DATOS DE LA FACTURA</div>
 
-        </div>
+          <div class="grid-item texto">FECHA</div>
+          <div class="grid-item">{{ factura_form.fecha }}</div>
+          <div class="grid-item texto">NÚMERO</div>
+          <div class="grid-item">{{ factura_form.numero }}</div>
+          <div class="grid-item texto">PROVEEDOR</div>
+          <div class="grid-item">{{ factura_form.proveedor }}</div>
+          <div class="grid-item texto">ESTADO</div>
+          <div class="grid-item">{{ factura_form.estado }}</div>
 
-
-        <button type="submit" class="save btn btn-default">Guardar</button>
-    </form>
+          <div class="grid-item texto">PRODUCTOS</div>
+          <div class="grid-item">{{ detalle_form.management_form }}
+                    {% for detalle in detalle_form %}
+                    <div class="link-formset">
+                    {{ detalle }}
+                    </div>
+                    {% endfor %}</div>
+          <div class="grid-item texto">TOTAL</div>
+          <div class="grid-item"></div>
+			</div>
+		<button class="save btn btn-default">GUARDAR</button>
+	</form>
+</main>
 {% endblock %}

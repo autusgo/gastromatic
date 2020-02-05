@@ -1,23 +1,43 @@
-{% extends 'factura/base.html' %}
+{% extends 'compras/base.html' %}
 
 {% block content %}
+<header>
+	LISTA DE PRODUCTOS
+</header>
+
+<main>
   {% for factura in facturas %}
     {% if factura.estado == 'IMPAGA' %}
-        <div class="factura">
-            <h2><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}</a></h2>
-            <p>{{ factura.fecha }}</p>
-            <p>Proveedor: {{ factura.proveedor }}</p>
-            <p>Total: {{ factura.total }}</p>
-            <h3>Estado: {{ factura.estado|linebreaksbr }}</h3>
-        </div>
+    <form target="_self"  method="POST" class="factura">{% csrf_token %}
+    			<div class="caja">
+         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+
+              <div class="grid-item texto">FECHA</div>
+              <div class="grid-item">{{ factura.fecha }}</div>
+              <div class="grid-item texto">PROVEEDOR</div>
+              <div class="grid-item">{{ factura.proveedor }}</div>
+              <div class="grid-item texto">TOTAL</div>
+              <div class="grid-item">{{ factura.total }}</div>
+              <div class="grid-item texto">ESTADO</div>
+              <div class="grid-item rojo" style="color: orange; font-weight: bold;">{{ factura.estado }}</div>
+    			</div>
+    	</form>
     {% else %}
-        <div class="factura">
-            <h2><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}</a></h2>
-            <p>{{ factura.fecha }}</p>
-            <p>Proveedor: {{ factura.proveedor }}</p>
-            <p>Total: {{ factura.total }}</p>
-            <p>Estado: {{ factura.estado|linebreaksbr }}</p>
-        </div>
+    <form target="_self"  method="POST" class="factura">{% csrf_token %}
+    			<div class="caja">
+         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+
+              <div class="grid-item texto">FECHA</div>
+              <div class="grid-item">{{ factura.fecha }}</div>
+              <div class="grid-item texto">PROVEEDOR</div>
+              <div class="grid-item">{{ factura.proveedor }}</div>
+              <div class="grid-item texto">TOTAL</div>
+              <div class="grid-item">{{ factura.total }}</div>
+              <div class="grid-item texto">ESTADO</div>
+              <div class="grid-item">{{ factura.estado }}</div>
+    			</div>
+    	</form>
     {% endif %}
   {% endfor %}
+  </main>
 {% endblock %}

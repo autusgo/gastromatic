@@ -1,9 +1,25 @@
-{% extends 'producto/base.html' %}
+{% extends 'compras/base.html' %}
 
 {% block content %}
-    <h2>Nuevo Producto</h2>
-    <form method="POST" class="producto-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Guardar</button>
-    </form>
+<header>
+	CARGAR UN NUEVO PRODUCTO
+</header>
+
+<main>
+<form target="_self"  method="POST" class="producto-form">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo">DATOS DEL PRODUCTO</div>
+
+          <div class="grid-item texto">NOMBRE</div>
+          <div class="grid-item">{{ form.nombre }}</div>
+          <div class="grid-item texto">TIPO</div>
+          <div class="grid-item">{{ form.tipo }}</div>
+          <div class="grid-item texto">PRECIO UNITARIO</div>
+          <div class="grid-item">{{ form.precio_unitario }}</div>
+          <div class="grid-item texto">UNIDAD DE MEDIDA</div>
+          <div class="grid-item">{{ form.unidad_de_medida }}</div>
+			</div>
+		<button class="save btn btn-default">GUARDAR</button>
+	</form>
+</main>
 {% endblock %}
