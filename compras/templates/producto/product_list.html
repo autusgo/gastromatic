@@ -11,7 +11,7 @@
 
 <form target="_self"  method="POST" class="producto-form">{% csrf_token %}
 			<div class="caja">
-     			<div class="grid-item titulo mayus"><a href="{% url 'producto_detail' pk=producto.pk %}">{{ producto.nombre }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+     			<div class="grid-item titulo mayus"><a href="{% url 'producto_detail' pk=producto.pk %}"><span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;{{ producto.nombre }}</a></div>
 
           <div class="grid-item texto">TIPO</div>
           <div class="grid-item">{{ producto.tipo }}</div>

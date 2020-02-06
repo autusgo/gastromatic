@@ -23,7 +23,12 @@
           <div class="grid-item">{{ detalle_form.management_form }}
                     {% for detalle in detalle_form %}
                     <div class="link-formset">
-                    {{ detalle }}
+											<div class="grid-item texto">PRODUCTO</div>
+											<div class="grid-item">{{ detalle.producto }}</div>
+											<div class="grid-item texto">CANTIDAD</div>
+											<div class="grid-item">{{ detalle.cantidad }}</div>
+											<div class="grid-item texto">SUBTOTAL</div>
+											<div class="grid-item">{{ detalle.subtotal }}</div>											
                     </div>
                     {% endfor %}</div>
           <div class="grid-item texto">TOTAL</div>

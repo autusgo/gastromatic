@@ -10,7 +10,7 @@
     {% if factura.estado == 'IMPAGA' %}
     <form target="_self"  method="POST" class="factura">{% csrf_token %}
     			<div class="caja">
-         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;{{ factura.numero }}</a></div>
 
               <div class="grid-item texto">FECHA</div>
               <div class="grid-item">{{ factura.fecha }}</div>
@@ -25,7 +25,7 @@
     {% else %}
     <form target="_self"  method="POST" class="factura">{% csrf_token %}
     			<div class="caja">
-         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}">{{ factura.numero }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+         			<div class="grid-item titulo"><a href="{% url 'factura_detail' pk=factura.pk %}"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;{{ factura.numero }}</a></div>
 
               <div class="grid-item texto">FECHA</div>
               <div class="grid-item">{{ factura.fecha }}</div>
@@ -35,6 +35,8 @@
               <div class="grid-item">{{ factura.total }}</div>
               <div class="grid-item texto">ESTADO</div>
               <div class="grid-item">{{ factura.estado }}</div>
+							<div class="grid-item texto">FECHA DE PAGO</div>
+							<div class="grid-item">{{ factura.fecha_de_pago }}</div>
     			</div>
     	</form>
     {% endif %}

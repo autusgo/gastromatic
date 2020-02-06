@@ -165,3 +165,7 @@ main {
 .mayus {
   text-transform: uppercase;
 }
+
+.link-formset {
+  display: inline;
+}

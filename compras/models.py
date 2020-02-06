@@ -25,12 +25,14 @@ class Producto(models.Model):
     unidad_de_medida = models.CharField(max_length=200, null=True, choices=UNIDAD_DE_MEDIDA)
     stock = models.PositiveIntegerField(null=True)
 
-class Meta:
-    ordering = ('nombre',)
-    index_together = (('tipo', 'nombre'))
+    class Meta:
+        ordering = ('nombre',)
+        index_together = (('tipo', 'nombre'))
 
     def __str__(self):
-        return '{} {} {}'.format(self.nombre, self.tipo, self.stock)
+        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
+    def __unicode__(self):
+        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
 
 #PROVEEDORES
 class Proveedor(models.Model):
@@ -47,6 +49,8 @@ class Proveedor(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.apellido, self.nombre)
+    def __unicode__(self):
+        return '{} {}'.format(self.apellido, self.nombre)
 
     #class Meta:
     #    ordering = ['producto']
@@ -62,10 +66,6 @@ class Factura(models.Model):
     fecha = models.DateField(default=datetime.date.today)
     numero = models.CharField(max_length=10, default='0000000000')
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    #producto = models.ForeignKey(Producto, null=True, on_delete=models.CASCADE)
-    #cantidad = models.DecimalField(max_digits=5 , null=True, decimal_places=0)
-    #monto = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
-    #total = models.DecimalField(max_digits=5 , decimal_places=2)
     productos = models.ManyToManyField(Producto, null=True, blank=True)
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
@@ -78,6 +78,8 @@ class Factura(models.Model):
     #     return round(total_detalles, 2)
 
     def __str__(self):
+        return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)
+    def __unicode__(self):
         return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)
 
 #DETALLE
@@ -93,5 +95,5 @@ class Detalle(models.Model):
         return round(total_linea, 2)
 
 
-    def __str__(self):
+    def __unicode__(self):
         return '{} {} {}'.format(self.cantidad, self.producto.nombre, self.total_linea)
