@@ -7,19 +7,20 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/compras.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
     <title>Gastron-O-Matic</title>
   </head>
 
 <body>
   <nav>
   		<div class="menu">
-  		<div class="menuheader">Seleccione una Operación</div>
-  		<div class="botones button1"><a href="{% url 'factura_new' %}">NUEVA FACTURA&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a></div>
-      <div class="botones button2"><a href="{% url 'factura_list' %}">VER FACTURAS&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open"></a></div>
-  		<div class="botones button3"><a href="{% url 'proveedor_new' %}">NUEVO PROVEEDOR&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></a></div>
-  		<div class="botones button4"><a href="{% url 'proveedor_list' %}">VER PROVEEDORES&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open"></a></div>
-  		<div class="botones button5"><a href="{% url 'producto_new' %}">NUEVO PRODUCTO&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></a></div>
-  		<div class="botones button6"><a href="{% url 'product_list' %}">VER PRODUCTOS&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open"></a></div>
+  		<div class="menuheader"><img src="{% static "img/logoGOM_med.png" %}" alt="Gastr-O-Matic"></div>
+  		<div class="botones button1"><a href="{% url 'factura_new' %}"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVA FACTURA</a></div>
+      <div class="botones button2"><a href="{% url 'producto_new' %}"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PRODUCTO</a></div>
+  		<div class="botones button3"><a href="{% url 'proveedor_new' %}"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PROVEEDOR</a></div>
+  		<div class="botones button4"><a href="{% url 'proveedor_list' %}"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;VER PROVEEDORES</a></div>
+      <div class="botones button5"><a href="{% url 'factura_list' %}"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;VER FACTURAS</a></div>
+  		<div class="botones button6"><a href="{% url 'product_list' %}"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;VER PRODUCTOS</a></div>
   	</div>
   </nav>
 
@@ -27,8 +28,7 @@
   {% endblock %}
 
   <footer>
-    <div>Godoy & Bertuzzi Inc. © MMXIX</div>
-    <div><img src="{% static "img/logo1.png" %}" alt="My image"></div>
+    <div style="padding-top:20px"><img src="{% static "img/logo_chicoBN.png" %}" alt="Gastr-O-Matic"> | Godoy & Bertuzzi Inc. © MMXIX</div>
   </footer>
 
   </body>

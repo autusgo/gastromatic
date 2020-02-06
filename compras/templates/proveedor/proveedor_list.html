@@ -10,7 +10,7 @@
 
 <form target="_self"  method="POST" class="proveedor">{% csrf_token %}
 			<div class="caja">
-     			<div class="grid-item titulo"><a href="{% url 'proveedor_detail' pk=proveedor.pk %}">{{ proveedor.apellido }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
+     			<div class="grid-item titulo mayus"><a href="{% url 'proveedor_detail' pk=proveedor.pk %}">{{ proveedor.apellido }}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a></div>
 
           <div class="grid-item texto">NOMBRE</div>
           <div class="grid-item">{{ proveedor.nombre }}</div>

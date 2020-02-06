@@ -40,14 +40,14 @@ a:hover {
 
 .menuheader {
 	grid-area: header;
-	padding: 70px;
+	padding: 70px 35px 70px 35px;
 	text-align: center;
 	font-size: 20px;
 	background-color: #ffffff;
 }
 
 .botones {
-	text-align: center;
+	text-align: left;
 	padding: 20px;
 	font-size: 15px;
 }
@@ -99,21 +99,20 @@ footer {
 	grid-area: footer;
 	text-align: center;
 	background-color: #eeeeee;
-	height: 20px;
+	height: 70px;
 }
 
 main {
 	grid-area: main;
 	padding-bottom: 150px;
-	padding-left: 100px;
+	padding-left: 300px;
 	padding-right:300px;
 	}
 
-	form {
-	margin-bottom: 170px;
-	}
+
 
 .caja {
+  margin-bottom: 50px;
   display: grid;
   grid-template-columns: 30% 70%;
   border: 1px solid #87baea;
@@ -157,4 +156,12 @@ main {
 	text-align: center;
 	margin-bottom: 50px;
 	font-size: 25px;
+}
+
+.save {
+  margin-right: 15px;
+}
+
+.mayus {
+  text-transform: uppercase;
 }
