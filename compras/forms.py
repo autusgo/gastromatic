@@ -31,5 +31,5 @@ class FacturaEditForm(forms.ModelForm):
 class DetalleForm(forms.ModelForm):
     class Meta:
         model = Detalle
-        fields = ('producto','cantidad', 'subtotal')
-    subtotal = forms.DecimalField(disabled=True)
+        fields = ('producto','cantidad')
+    #subtotal = forms.DecimalField(disabled=True)

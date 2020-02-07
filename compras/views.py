@@ -105,7 +105,7 @@ def factura_detail(request, pk):
     return render(request, template, context)
 
 def factura_new(request):
-    DetalleFormSet = formset_factory(DetalleForm, extra=2)
+    DetalleFormSet = formset_factory(DetalleForm, extra=1)
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
         detalle_formset = DetalleFormSet(request.POST)
@@ -120,15 +120,15 @@ def factura_new(request):
             #     subtotal += float(detalle.precio_unitario)
             # factura.total = subtotal
             factura.save()
-            for detalles in detalle_formset:
-                detalles.factura_id = factura.pk
-                detalles.save()
+            # for detalles in detalle_formset:
+            #     detalles.factura_id = factura.pk
+            #     detalles.save()
             return redirect('factura_detail', pk=factura.pk)
         else:
             return redirect('factura_error')
     else:
         factura_form = FacturaForm()
-        detalle_formset=formset_factory(DetalleForm, extra=5)
+        detalle_formset=formset_factory(DetalleForm, extra=1)
         return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_formset} )
 
 def factura_edit(request, pk):

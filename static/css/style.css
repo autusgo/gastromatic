@@ -158,6 +158,11 @@ main {
 	font-size: 25px;
 }
 
+.impaga {
+  color: orange;
+  font-weight: bold;
+}
+
 .save {
   margin-right: 15px;
 }
