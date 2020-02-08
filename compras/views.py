@@ -120,9 +120,9 @@ def factura_new(request):
             #     subtotal += float(detalle.precio_unitario)
             # factura.total = subtotal
             factura.save()
-            # for detalles in detalle_formset:
-            #     detalles.factura_id = factura.pk
-            #     detalles.save()
+            for detalles in detalle_formset:
+                # detalles.factura_id = factura.pk
+                detalles.save()
             return redirect('factura_detail', pk=factura.pk)
         else:
             return redirect('factura_error')

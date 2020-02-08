@@ -66,7 +66,7 @@ class Factura(models.Model):
     fecha = models.DateField(default=datetime.date.today)
     numero = models.CharField(max_length=10, default='0000000000')
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    productos = models.ManyToManyField(Producto, null=True, blank=True)
+    #productos = models.ManyToManyField(Producto, null=True, blank=True)
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
