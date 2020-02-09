@@ -1,11 +1,24 @@
-<html>
-<head>
-</head>
-<body>
-<h1>THIS IS THE HOME TEMPLATE</h1>
-<h2><a href="{% url 'product_list' %}"> PRODUCTOS</a></h2>
-<h2><a href="{% url 'proveedor_list' %}"> PROVEEDORES</a></h2>
-<h2><a href="{% url 'factura_list' %}"> FACTURAS</a></h2>
+{% extends 'compras/base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<header>
+	MÓDULO DE COMPRAS
+</header>
+<main>
+  {% if user.is_authenticated %}
+  <div class="bienvenida mayus"> ¡BIENVENIDO {{ user.username }}! </div>
+  {% else %}
+  <div class="bienvenida"> ¡BIENVENIDO! </div>
+  <br>
+  <div class="bienvenida"> USTED NO SE ENCUENTRA AUTENTICADO </div>
+  <br>
+  <div class="exitoso"> LA FUNCIONALIDAD DEL SITIO SE VERÁ RESTRINGIDA </div>
+  {% endif %}
+  <br>
+  <div class="exitoso">
+    <p>PARA COMENZAR</p>
+    <p>SELECCIONE UNA OPCIÓN DEL MENÚ DE LA IZQUIERDA</p>
+  </div>
+</main>
+{% endblock %}

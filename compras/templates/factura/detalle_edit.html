@@ -1,0 +1,20 @@
+{% extends 'compras/base.html' %}
+
+{% block content %}
+<header>
+	CARGAR DETALLES DE LA FACTURA
+</header>
+
+<main>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ detalle_formset.management_form }}
+    {% for field in detalle_formset %}
+      {{field}}
+      <hr>
+    {% endfor %}
+
+    <input type="submit" name="Submit">
+  </form>
+</main>
+{% endblock %}

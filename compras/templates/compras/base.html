@@ -15,13 +15,32 @@
   <nav>
   		<div class="menu">
   		<div class="menuheader"><img src="{% static "img/logoGOM_med.png" %}" alt="Gastr-O-Matic"></div>
-  		<a href="{% url 'factura_new' %}"><div class="botones button1"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVA FACTURA</div></a>
+  		{% if user.is_authenticated %}
+      <a href="{% url 'factura_new' %}"><div class="botones button1"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVA FACTURA</div></a>
       <a href="{% url 'producto_new' %}"><div class="botones button2"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PRODUCTO</div></a>
   		<a href="{% url 'proveedor_new' %}"><div class="botones button3"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PROVEEDOR</div></a>
+      {% else %}
+      <div class="botones button1"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVA FACTURA</div>
+      <div class="botones button2"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PRODUCTO</div>
+      <div class="botones button3"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;NUEVO PROVEEDOR</div>
+      {% endif %}
   		<a href="{% url 'proveedor_list' %}"><div class="botones button4"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;VER PROVEEDORES</div></a>
       <a href="{% url 'factura_list' %}"><div class="botones button5"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;&nbsp;VER FACTURAS</div></a>
   		<a href="{% url 'product_list' %}"><div class="botones button6"><span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;&nbsp;VER PRODUCTOS</div></a>
   	</div>
+    <div class="menu menufooter">
+      {% if user.is_authenticated %}
+      <p>USUARIO:</p>
+      <p class="mayus">{{ request.user }}</p>
+      <p><a href="{% url 'logout' %}">CERRAR SESIÓN&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span></a><p>
+      {% else %}
+      <div>EL USUARIO NO SE ENCUENTRA AUTENTICADO</div>
+      <br>
+      <div>FUNCIONALIDAD REDUCIDA: MODO VISTA</div>
+      <br>
+      <p><a href="{% url 'login' %}">ACCEDER&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-log-in"></span></a><p>
+      {% endif %}
+    </div>
   </nav>
 
   {% block content %}

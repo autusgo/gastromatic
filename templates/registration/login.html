@@ -1,0 +1,44 @@
+{% load static %}
+{% block content %}
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/compras.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
+  <title>Gastron-O-Matic</title>
+</head>
+
+<body>
+  <header>
+    <div>
+      <img src="{% static "img/logo_big.png" %}" alt="Gastr-O-Matic">
+    </div>
+  </header>
+  <nav>
+
+  </nav>
+<main>
+<form target="_self" method="POST" class="login">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo">ACCESO
+
+					</div>
+          <div class="grid-item texto">USUARIO</div>
+          <div class="grid-item">{{ form.username }}</div>
+          <div class="grid-item texto">CONTRASEÑA</div>
+          <div class="grid-item date">{{ form.password }}</div>
+			</div>
+      <button class="save btn btn-default">ENVIAR</button>
+	</form>
+</main>
+<footer>
+  <div style="padding-top:20px"><img src="{% static "img/logo_chicoBN.png" %}" alt="Gastr-O-Matic"> | Godoy & Bertuzzi Inc. © MMXIX</div>
+</footer>
+{% endblock %}
+</body>
+</html>

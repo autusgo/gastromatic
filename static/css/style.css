@@ -7,7 +7,7 @@ body {
 	font-family: 'Nunito Sans', sans-serif;
 	display: grid;
   grid-template:
-  "menu  header"
+  "menu header"
   "menu main"
   "menu main"
   "footer footer" /
@@ -44,6 +44,12 @@ a:hover {
 	text-align: center;
 	font-size: 20px;
 	background-color: #ffffff;
+}
+
+.menufooter {
+	padding: 70px 35px 70px 35px;
+	text-align: center;
+	font-size: 15px;
 }
 
 .botones {
@@ -125,11 +131,6 @@ main {
   align-items: left;
 }
 
-.rojo {
-  color: orange;
-  font-weight: bold;
-}
-
 .titulo {
   text-align: center;
   font-size: 20px;
@@ -173,4 +174,17 @@ main {
 
 .link-formset {
   display: inline;
+}
+
+.bienvenida {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #87baea;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.h3 {
+  text-align: center;
 }

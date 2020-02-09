@@ -14,8 +14,10 @@
 <form target="_self" class="factura">{% csrf_token %}
 			<div class="caja">
      			<div class="grid-item titulo">{{ factura.numero }}
+						{% if user.is_authenticated %}
 						<a href="{% url 'factura_edit' pk=factura.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 						<a href="{% url 'factura_remove' pk=factura.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+						{% endif %}
 					</div>
           <div class="grid-item texto">ESTADO</div>
 					{% if factura.estado == 'IMPAGA' %}
