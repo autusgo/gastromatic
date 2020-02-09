@@ -109,13 +109,18 @@ def factura_new(request):
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
         detalle_form = DetalleForm(request.POST)
+        # producto_form = ProductoForm(request.POST)
+        # print(producto_form)
         if factura_form.is_valid() and detalle_form.is_valid():
             factura = factura_form.save()
+            # producto = producto_form.save()
             detalle = detalle_form.save(False)
             detalle.factura=factura
+            detalle.subtotal=round(detalle.producto.precio_unitario * detalle.cantidad, 2)
             detalle.save()
             return redirect('factura_detail', pk=factura.pk)
-
+        else:
+            print('alguna form no es válida')
     else:
         factura_form = FacturaForm()
         detalle_form = DetalleForm()
