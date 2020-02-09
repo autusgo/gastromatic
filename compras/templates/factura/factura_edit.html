@@ -6,7 +6,7 @@
 </header>
 
 <main>
-<form target="_self"  method="POST" class="factura-form">{% csrf_token %}
+<form class="factura-form"  method="POST" action="{% url 'factura_new' %}">{% csrf_token %}
 			<div class="caja">
      			<div class="grid-item titulo">DATOS DE LA FACTURA</div>
 
@@ -19,20 +19,10 @@
           <div class="grid-item texto">ESTADO</div>
           <div class="grid-item">{{ factura_form.estado }}</div>
 
-          <div class="grid-item texto">PRODUCTOS</div>
-          <div class="grid-item">{{ detalle_form.management_form }}
-                    {% for detalle in detalle_form %}
-                    <div class="link-formset">
-											<div class="grid-item texto">PRODUCTO</div>
-											<div class="grid-item">{{ detalle.producto }}</div>
-											<div class="grid-item texto">CANTIDAD</div>
-											<div class="grid-item">{{ detalle.cantidad }}</div>
-											<div class="grid-item texto">SUBTOTAL</div>
-											<div class="grid-item">{{ detalle.subtotal }}</div>											
-                    </div>
-                    {% endfor %}</div>
-          <div class="grid-item texto">TOTAL</div>
-          <div class="grid-item"></div>
+					<div class="grid-item texto">PRODUCTOS</div>
+          <div class="grid-item">{{ detalle_form.producto }}</div>
+          <div class="grid-item texto">CANTIDAD</div>
+          <div class="grid-item">{{ detalle_form.cantidad }}</div>
 			</div>
 		<button class="save btn btn-default">GUARDAR</button>
 	</form>

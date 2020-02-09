@@ -3,6 +3,7 @@ from .models import *
 from .forms import *
 from django.forms import formset_factory
 from django.urls import reverse
+import time
 
 # PRODUCTOS
 def product_list(request):
@@ -105,31 +106,24 @@ def factura_detail(request, pk):
     return render(request, template, context)
 
 def factura_new(request):
-    DetalleFormSet = formset_factory(DetalleForm, extra=1)
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_formset = DetalleFormSet(request.POST)
-        if factura_form.is_valid() and detalle_formset.is_valid():
-            factura = factura_form.save(commit=False)
-            #post.author = request.user
-            #post.published_date = timezone.now()
-            #detalle.subtotal = detalle.total_linea
-            #factura.total = factura.total_detalles
-            # subtotal = 0.00
-            # for detalle in factura.productos.all():
-            #     subtotal += float(detalle.precio_unitario)
-            # factura.total = subtotal
-            factura.save()
-            for detalles in detalle_formset:
-                # detalles.factura_id = factura.pk
-                detalles.save()
+        detalle_form = DetalleForm(request.POST)
+        if factura_form.is_valid() and detalle_form.is_valid():
+            factura = factura_form.save()
+            detalle = detalle_form.save(False)
+            detalle.factura=factura
+            detalle.save()
             return redirect('factura_detail', pk=factura.pk)
-        else:
-            return redirect('factura_error')
+
     else:
         factura_form = FacturaForm()
-        detalle_formset=formset_factory(DetalleForm, extra=1)
-        return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_formset} )
+        detalle_form = DetalleForm()
+    args = {}
+    # args.update(csrf(request))
+    args['factura_form'] = factura_form
+    args['detalle_form'] = detalle_form
+    return render(request, 'factura/factura_edit.html', args)
 
 def factura_edit(request, pk):
     # factura = get_object_or_404(Factura, id=3)
