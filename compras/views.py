@@ -118,6 +118,8 @@ def factura_new(request):
             detalle.factura=factura
             detalle.subtotal=round(detalle.producto.precio_unitario * detalle.cantidad, 2)
             detalle.save()
+            factura.total=detalle.subtotal
+            factura.save()
             return redirect('factura_detail', pk=factura.pk)
         else:
             print('alguna form no es válida')
@@ -131,30 +133,19 @@ def factura_new(request):
     return render(request, 'factura/factura_edit.html', args)
 
 def factura_edit(request, pk):
-    # factura = get_object_or_404(Factura, id=3)
-    # producto = get_object_or_404(Producto, pk=pk)
-    # if not producto in factura.productos.all():
-    #     factura.productos.add(producto)
-    # else:
-    #     #factura.detalles.remove(detalle)
-    #     print('el producto no está en la factura')
-    # subtotal = 0.00
-    # for item in factura.productos.all():
-    #     subtotal += float(item.precio_unitario)
-    # factura.total = subtotal
-    # factura.save()
-    # return HttpResponseRedirect(reverse('factura_detail'))
-
     factura = get_object_or_404(Factura, pk=pk)
+    detalle = Detalle.objects.filter(id=factura.id).first()
     if request.method == "POST":
         factura_form = FacturaEditForm(request.POST, instance=factura)
-        if factura_form.is_valid():
+        detalle_form = DetalleEditForm(request.POST, instance=detalle)
+        if factura_form.is_valid() and detalle_form.is_valid():
             factura = factura_form.save(commit=False)
             factura.save()
             return redirect('factura_list', pk=factura.pk)
     else:
         factura_form = FacturaEditForm(instance=factura)
-    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form})
+        detalle_form = DetalleEditForm(instance=detalle)
+    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_form})
 
 def factura_remove(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
