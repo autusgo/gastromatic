@@ -72,10 +72,9 @@ class Factura(models.Model):
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
-    # @property
-    # def total_detalles(self):
-    #     total_detalles = self.detalle.total_linea
-    #     return round(total_detalles, 2)
+    def total_detalles(self):
+        total_detalles = self.detalle.total_linea
+        return round(total_detalles, 2)
 
     def __str__(self):
         return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)
@@ -89,7 +88,6 @@ class Detalle(models.Model):
     cantidad = models.PositiveIntegerField(default=1)
     subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
-    @property
     def total_linea(self):
         total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
         return round(total_linea, 2)

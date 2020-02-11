@@ -95,7 +95,15 @@ def detalle_new(request, pk):
     if request.method == "POST":
         detalle_formset = DetalleFormSet(request.POST, instance=factuid)
         if detalle_formset.is_valid():
-            detalle = detalle_formset.save()
+            detalles = detalle_formset.save(commit=False)
+            subtotal=0.00
+            for detalle in detalles:
+                subtotal=detalle.total_linea()
+                detalle.subtotal=subtotal
+                detalles_tot=+subtotal
+                detalle.save()
+            factuid.total=detalles_tot
+            factuid.save()
             return redirect('factura_detail', pk=pk)
         else:
             print('detalle_formset no es válida')
