@@ -29,6 +29,10 @@ class Producto(models.Model):
         ordering = ('nombre',)
         index_together = (('tipo', 'nombre'))
 
+    def actualizar_stock(self):
+        actualizar_stock = self.stock + detalle.cantidad
+        return int(actualizar_stock)
+
     def __str__(self):
         return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
     def __unicode__(self):
@@ -72,9 +76,13 @@ class Factura(models.Model):
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
-    def total_detalles(self):
-        total_detalles = self.detalle.total_linea
-        return round(total_detalles, 2)
+    class Meta:
+        ordering = ('total',)
+        index_together = (('proveedor', 'estado'))
+
+    # def total_detalles(self):
+    #     total_detalles = self.detalle.total_linea
+    #     return round(total_detalles, 2)
 
     def __str__(self):
         return '{} {} {}'.format(self.numero, self.proveedor.apellido, self.estado)

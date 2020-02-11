@@ -96,11 +96,11 @@ def detalle_new(request, pk):
         detalle_formset = DetalleFormSet(request.POST, instance=factuid)
         if detalle_formset.is_valid():
             detalles = detalle_formset.save(commit=False)
-            subtotal=0.00
+            detalles_tot=0.00
             for detalle in detalles:
                 subtotal=detalle.total_linea()
                 detalle.subtotal=subtotal
-                detalles_tot=+subtotal
+                detalles_tot+=float(subtotal)
                 detalle.save()
             factuid.total=detalles_tot
             factuid.save()
