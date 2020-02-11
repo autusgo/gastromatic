@@ -1,5 +1,9 @@
 {% extends 'compras/base.html' %}
-
+<script>
+window.onbeforeunload = function() {
+   return "Si sale de esta vista sin guardar, la factura quedará vacía";
+};
+</script>
 {% block content %}
 <header>
 	CARGAR DETALLES DE LA FACTURA

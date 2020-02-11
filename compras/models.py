@@ -73,7 +73,7 @@ class Factura(models.Model):
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
     class Meta:
-        ordering = ('total',)
+        ordering = ('estado',)
         index_together = (('proveedor', 'estado'))
 
     # def total_detalles(self):
