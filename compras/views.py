@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
 
@@ -89,6 +89,23 @@ def proveedor_remove(request, pk):
 #def detalle_item(request, pk):
     #producto = get_object_or_404(Producto, pk=pk)
     #precio_total = get_object_or_404(Detalle, pk=pk)
+def detalle_new(request, pk):
+    factuid = Factura.objects.get(pk=pk)
+    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False)
+    if request.method == "POST":
+        detalle_formset = DetalleFormSet(request.POST, instance=factuid)
+        if detalle_formset.is_valid():
+            detalle = detalle_formset.save()
+            return redirect('factura_detail', pk=pk)
+        else:
+            print('detalle_formset no es válida')
+    else:
+        DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=5)
+        detalle_formset = DetalleFormSet(instance=factuid)
+    args = {}
+    args['detalle_formset'] = detalle_formset
+    return render(request, 'factura/detalle_new.html', args)
+
 
 #FACTURAS
 def factura_error(request):
@@ -108,28 +125,16 @@ def factura_detail(request, pk):
 def factura_new(request):
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_form = DetalleForm(request.POST)
-        # producto_form = ProductoForm(request.POST)
-        # print(producto_form)
-        if factura_form.is_valid() and detalle_form.is_valid():
+        if factura_form.is_valid():
             factura = factura_form.save()
-            # producto = producto_form.save()
-            detalle = detalle_form.save(False)
-            detalle.factura=factura
-            detalle.subtotal=round(detalle.producto.precio_unitario * detalle.cantidad, 2)
-            detalle.save()
-            factura.total=detalle.subtotal
             factura.save()
-            return redirect('factura_detail', pk=factura.pk)
+            return redirect('detalle_new', pk=factura.pk)
         else:
-            print('alguna form no es válida')
+            print('factura_form no es válida')
     else:
         factura_form = FacturaForm()
-        detalle_form = DetalleForm()
     args = {}
-    # args.update(csrf(request))
     args['factura_form'] = factura_form
-    args['detalle_form'] = detalle_form
     return render(request, 'factura/factura_edit.html', args)
 
 def factura_edit(request, pk):

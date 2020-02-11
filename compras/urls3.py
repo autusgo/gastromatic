@@ -8,5 +8,5 @@ urlpatterns = [
     path('factura/<int:pk>/edit/', views.factura_edit, name='factura_edit'),
     path('factura/<pk>/remove/', views.factura_remove, name='factura_remove'),
     path('factura/error/', views.factura_error, name='factura_error'),
-    # path('factura/<int:pk>/detalle', views.detalle_new, name='detalle_new'),
+    path('factura/<int:pk>/detalle', views.detalle_new, name='detalle_new'),
 ]
