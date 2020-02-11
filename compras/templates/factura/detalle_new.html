@@ -1,10 +1,6 @@
 {% extends 'compras/base.html' %}
-<script>
-window.onbeforeunload = function() {
-   return "Si sale de esta vista sin guardar, la factura quedará vacía";
-};
-</script>
 {% block content %}
+
 <header>
 	CARGAR DETALLES DE LA FACTURA
 </header>
@@ -21,7 +17,25 @@ window.onbeforeunload = function() {
 
             {% endfor %}
   			</div>
-  		<button class="save btn btn-default">GUARDAR</button>
+  		<button id='save-btn' class="save btn btn-default">GUARDAR</button>
   	</form>
 </main>
+<script>
+  console.log('script')
+  var hasSaved = false
+
+  document.getElementById('save-btn').addEventListener('click', function(event) {
+   console.log('btn click')
+   hasSaved = true
+  })
+
+  window.onbeforeunload = function(event) {
+   if (hasSaved) {
+    console.log('has saved')
+    return
+   }
+
+   return "Si sale de esta vista sin guardar, la factura quedará vacía";
+  }
+ </script>
 {% endblock %}
