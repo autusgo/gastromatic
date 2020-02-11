@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from django.conf import settings
 from decimal import Decimal
 from localflavor.ar.forms import ARCUITField
@@ -43,6 +42,7 @@ class Proveedor(models.Model):
     teléfono = models.CharField(max_length=10)
     correo_electrónico = models.EmailField(max_length=100)
     dirección = models.CharField(max_length=200)
+    deuda = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
 
     class Meta:
         verbose_name_plural = "Proveedores"
@@ -60,7 +60,11 @@ class Factura(models.Model):
     ESTADO = (
             ('PAGA', 'PAGA'),
             ('IMPAGA', 'IMPAGA'),
-            #('PARCIAL', 'PARCIAL'),
+            )
+    TIPO = (
+            ('Factura A', 'Factura A'),
+            ('Factura B', 'Factura B'),
+            ('Factura C', 'Factura C'),
             )
 
     fecha = models.DateField(default=datetime.date.today)
@@ -71,6 +75,7 @@ class Factura(models.Model):
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
     total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+    tipo = models.CharField(max_length=200, choices=TIPO)
 
     class Meta:
         ordering = ('estado',)

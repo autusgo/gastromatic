@@ -91,7 +91,7 @@ def proveedor_remove(request, pk):
     #precio_total = get_object_or_404(Detalle, pk=pk)
 def detalle_new(request, pk):
     factuid = Factura.objects.get(pk=pk)
-    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False)
+    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, min_num=1, validate_min=True)
     if request.method == "POST":
         detalle_formset = DetalleFormSet(request.POST, instance=factuid)
         if detalle_formset.is_valid():
@@ -110,6 +110,12 @@ def detalle_new(request, pk):
                 prodid.stock=nuevostock
                 prodid.save()
             factuid.total=detalles_tot
+            proveid=factuid.proveedor_id #agarro el id del proveedor desde la factura
+            proveedorinstance=Proveedor.objects.get(id=proveid) #uso el id para levantar el objeto Proveedor y lo guardo en proveedorinstance
+            nuevadeuda=int(proveedorinstance.deuda) #guardo lo que haya ya guardado en la deuda del proveedor en nuevadeuda
+            nuevadeuda+=int(factuid.total) #actualizo lo que ya haya sumándole la nueva factura
+            proveedorinstance.deuda=nuevadeuda
+            proveedorinstance.save()
             factuid.save()
             return redirect('factura_detail', pk=pk)
         else:

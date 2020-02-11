@@ -22,6 +22,8 @@
           <div class="grid-item">{{ proveedor.dirección }}</div>
           <div class="grid-item texto">CORREO ELECTRÓNICO</div>
           <div class="grid-item">{{ proveedor.correo_electrónico }}</div>
+					<div class="grid-item texto">DEUDA TOTAL</div>
+					<div class="grid-item">$ {{ proveedor.deuda }}</div>
 			</div>
 	</form>
   {% endfor %}
