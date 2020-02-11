@@ -29,10 +29,6 @@ class Producto(models.Model):
         ordering = ('nombre',)
         index_together = (('tipo', 'nombre'))
 
-    def actualizar_stock(self):
-        actualizar_stock = self.stock + detalle.cantidad
-        return int(actualizar_stock)
-
     def __str__(self):
         return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
     def __unicode__(self):

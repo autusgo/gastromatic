@@ -97,11 +97,18 @@ def detalle_new(request, pk):
         if detalle_formset.is_valid():
             detalles = detalle_formset.save(commit=False)
             detalles_tot=0.00
+            nuevostock=0
             for detalle in detalles:
                 subtotal=detalle.total_linea()
                 detalle.subtotal=subtotal
                 detalles_tot+=float(subtotal)
                 detalle.save()
+                idpr=detalle.producto_id #tengo el id del producto que quiero modificar
+                prodid=Producto.objects.get(id=idpr) #busco el producto por ese id y guardo la instancia en proid
+                nuevostock=int(prodid.stock)
+                nuevostock+=int(detalle.cantidad)
+                prodid.stock=nuevostock
+                prodid.save()
             factuid.total=detalles_tot
             factuid.save()
             return redirect('factura_detail', pk=pk)
