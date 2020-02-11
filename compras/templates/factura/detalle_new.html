@@ -10,15 +10,18 @@ window.onbeforeunload = function() {
 </header>
 
 <main>
-  <form action="" method="POST">
-    {% csrf_token %}
-    {{ detalle_formset.management_form }}
-    {% for field in detalle_formset %}
-      {{field}}
-      <hr>
-    {% endfor %}
+  <form class="factura-form"  method="POST">{% csrf_token %}
+        {{ detalle_formset.management_form }}
+  			<div class="cajita">
+       			<div class="grid-item titulo">DETALLE</div>
+            {% for field in detalle_formset %}
+            <div class="grid-item texto">PRODUCTO {{ field.producto }}</div>
 
-    <input type="submit" name="Submit">
-  </form>
+            <div class="grid-item texto">CANTIDAD {{ field.cantidad }}</div>
+
+            {% endfor %}
+  			</div>
+  		<button class="save btn btn-default">GUARDAR</button>
+  	</form>
 </main>
 {% endblock %}
