@@ -7,9 +7,18 @@
 </header>
 
 <main>
-  {% for producto in productos %}
 
-<form target="_self"  method="POST" class="producto-form">{% csrf_token %}
+	<form method="GET">
+		<div class="busqueda_pro">
+		 <div class="box1" value="TIPO">TIPO</div>
+		 <div class="box2" value="TIPO">{{ filter.form.tipo }}</div>
+		 <div class="box3"><input class="save btn btn-default"  type="submit" value="FILTRAR" /></div>
+		</div>
+	</form>
+
+  {% for producto in filter.qs %}
+
+<form target="_self"  method="POST" class="producto-form">
 			<div class="caja">
      			<div class="grid-item titulo mayus"><a href="{% url 'producto_detail' pk=producto.pk %}"><span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;{{ producto.nombre }}</a></div>
 

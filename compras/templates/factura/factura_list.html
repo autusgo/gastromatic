@@ -6,14 +6,19 @@
 </header>
 
 <main>
-
-	<div class="grid-item texto mayus" style="border-top: 0px">
-	<form action="" method="GET">	{{ filter.form }} <input style="font-align: right" type="submit" value="FILTRAR" />
+	<form method="GET">
+		<div class="busqueda_fac">
+	   <div class="box1" value="ESTADO">ESTADO</div>
+	   <div class="box2" value="PROVEEDOR">PROVEEDOR</div>
+	   <div class="box3"></div>
+		 <div class="box4" value="ESTADO">{{ filter.form.estado }}</div>
+		 <div class="box5" value="ESTADO">{{ filter.form.proveedor }}</div>
+		 <div class="box6"><input class="save btn btn-default"  type="submit" value="FILTRAR" /></div>
+		</div>
 	</form>
-	</div>
 
   {% for factura in filter.qs %}
-	
+
     {% if factura.estado == 'IMPAGA' %}
     <form target="_self"  method="POST" class="factura">{% csrf_token %}
     			<div class="caja">

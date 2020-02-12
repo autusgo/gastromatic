@@ -38,7 +38,7 @@ class Proveedor(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
-    CUIT = models.CharField(max_length=13)
+    CUIT = models.IntegerField(max_length=13)
     teléfono = models.CharField(max_length=10)
     correo_electrónico = models.EmailField(max_length=100)
     dirección = models.CharField(max_length=200)
@@ -68,7 +68,7 @@ class Factura(models.Model):
     #         )
 
     fecha = models.DateField(default=datetime.date.today)
-    numero = models.CharField(max_length=10)
+    numero = models.IntegerField(max_length=13)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     #productos = models.ManyToManyField(Producto, null=True, blank=True)
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)

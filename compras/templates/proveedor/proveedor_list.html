@@ -7,10 +7,15 @@
 
 <main>
 
-	<div class="grid-item texto mayus" style="border-top: 0px">
-	<form action="" method="GET">	{{ filter.form }} <input style="font-align: right" type="submit" value="FILTRAR" />
+
+
+	<form method="GET">
+		<div class="busqueda_pro">
+		 <div class="box1" value="APELLIDO">APELLIDO</div>
+		 <div class="box2" value="PROVEEDOR">{{ filter.form.apellido }}</div>
+		 <div class="box3"><input class="save btn btn-default"  type="submit" value="FILTRAR" /></div>
+		</div>
 	</form>
-	</div>
 
   {% for proveedor in filter.qs %}
 

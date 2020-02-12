@@ -207,3 +207,13 @@ main {
 .h3 {
   text-align: center;
 }
+
+.busqueda_fac {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.busqueda_pro {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+}

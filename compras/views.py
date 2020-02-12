@@ -5,12 +5,16 @@ from django.forms import formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
 from django.views.generic import (ListView, DetailView)
-from .filters import ProveedorFilter, FacturaFilter
+from .filters import ProveedorFilter, FacturaFilter, ProductoFilter
 
 # PRODUCTOS
+# def product_list(request):
+#     productos = Producto.objects.all().order_by('nombre')
+#     return render(request, 'producto/product_list.html', {'productos': productos})
+
 def product_list(request):
-    productos = Producto.objects.all().order_by('nombre')
-    return render(request, 'producto/product_list.html', {'productos': productos})
+    productos = ProductoFilter(request.GET, queryset=Producto.objects.all())
+    return render(request, 'producto/product_list.html', {'filter': productos})
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
