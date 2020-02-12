@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #third party
     'localflavor',
     'widget_tweaks',
+    'django_filters',
 
     #own
     'compras',

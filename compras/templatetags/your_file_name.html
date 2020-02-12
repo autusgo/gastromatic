@@ -1,0 +1,33 @@
+{% extends 'compras/base.html' %}
+
+{% block content %}
+<header>
+	LISTA DE PROVEEDORES
+</header>
+
+<main>
+	{% load admin_list %}
+
+	{% for proveedor in proveedor_list|order_by:"nombre,-deuda"
+
+<form target="_self"  method="POST" class="proveedor">{% csrf_token %}
+			<div class="caja">
+     			<div class="grid-item titulo mayus"><a href="{% url 'proveedor_detail' pk=proveedor.pk %}"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ proveedor.apellido }}</a></div>
+
+          <div class="grid-item texto">NOMBRE</div>
+          <div class="grid-item">{{ proveedor.nombre }}</div>
+          <div class="grid-item texto">CUIT</div>
+          <div class="grid-item">{{ proveedor.CUIT}}</div>
+          <div class="grid-item texto">TELÉFONO</div>
+          <div class="grid-item">{{ proveedor.teléfono }}</div>
+          <div class="grid-item texto">DIRECCIÓN</div>
+          <div class="grid-item">{{ proveedor.dirección }}</div>
+          <div class="grid-item texto">CORREO ELECTRÓNICO</div>
+          <div class="grid-item">{{ proveedor.correo_electrónico }}</div>
+					<div class="grid-item texto">DEUDA TOTAL</div>
+					<div class="grid-item">$ {{ proveedor.deuda }}</div>
+			</div>
+	</form>
+  {% endfor %}
+</main>
+{% endblock %}

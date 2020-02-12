@@ -4,6 +4,7 @@ from .forms import *
 from django.forms import formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
+from django.views.generic import (ListView, DetailView)
 
 # PRODUCTOS
 def product_list(request):
@@ -45,9 +46,14 @@ def producto_remove(request, pk):
     return redirect('product_list')
 
 #PROVEEDORES
-def proveedor_list(request):
-    proveedores = Proveedor.objects.all().order_by('apellido')
-    return render(request, 'proveedor/proveedor_list.html', {'proveedores': proveedores})
+# def proveedor_list(request):
+#     proveedores = Proveedor.objects.all().order_by('apellido')
+#     return render(request, 'proveedor/proveedor_list.html', {'proveedores': proveedores})
+
+class ProveedorListView(ListView):
+    model = Proveedor
+    template = 'proveedor/proveedor_list.html'
+    proveedores = Proveedor.objects.all()
 
 def proveedor_detail(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
@@ -187,15 +193,3 @@ def factura_remove(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     factura.delete()
     return redirect('factura_list')
-
- # def detalle_edit(request, pk):
- #     detalle = get_object_or_404(Detalle, pk=pk)
- #     if request.method == "POST":
- #         form_det = DetalleForm(request.POST, instance=detalle)
- #         if form_det.is_valid():
- #             detalle = form_det.save(commit=False)
- #             detalle.save()
- #             return redirect('factura_detail', pk=detalle.pk)
- #     else:
- #         form_det = DetalleForm(instance=detalle)
- #     return render(request, 'factura/factura_edit.html', {'form_det': form_det})
