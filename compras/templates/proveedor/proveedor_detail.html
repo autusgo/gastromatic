@@ -15,7 +15,10 @@
      			<div class="grid-item titulo mayus">{{ proveedor.apellido }}
 						{% if user.is_authenticated %}
             <div style="text-align:right"><a href="{% url 'proveedor_edit' pk=proveedor.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;&nbsp;&nbsp;
-            <a onclick="return confirm('¿Está seguro de que desea eliminar el proveedor?');" href="{% url 'proveedor_remove' pk=proveedor.pk %}"><span class="glyphicon glyphicon-trash"></span></a></div>
+							{% if proveedor.deuda == 0 %}
+            <a onclick="return confirm('¿Está seguro de que desea eliminar el proveedor?');" href="{% url 'proveedor_remove' pk=proveedor.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+							{% endif %}
+						</div>
 						{% endif %}
 					</div>
           <div class="grid-item texto">NOMBRE</div>
