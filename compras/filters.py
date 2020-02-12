@@ -10,4 +10,4 @@ class ProveedorFilter(django_filters.FilterSet):
 class FacturaFilter(django_filters.FilterSet):
     class Meta:
         model = Factura
-        fields = ['estado']
+        fields = ['estado', 'proveedor']
