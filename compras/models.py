@@ -29,9 +29,9 @@ class Producto(models.Model):
         index_together = (('tipo', 'nombre'))
 
     def __str__(self):
-        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
+        return '{}'.format(self.nombre)
     def __unicode__(self):
-        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
+        return '{}'.format(self.nombre)
 
 #PROVEEDORES
 class Proveedor(models.Model):
@@ -42,7 +42,7 @@ class Proveedor(models.Model):
     teléfono = models.CharField(max_length=10)
     correo_electrónico = models.EmailField(max_length=100)
     dirección = models.CharField(max_length=200)
-    deuda = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+    deuda = models.DecimalField(max_digits=9 , decimal_places=2, default=0)
 
     class Meta:
         verbose_name_plural = "Proveedores"
@@ -61,11 +61,11 @@ class Factura(models.Model):
             ('PAGA', 'PAGA'),
             ('IMPAGA', 'IMPAGA'),
             )
-    TIPO = (
-            ('Factura A', 'Factura A'),
-            ('Factura B', 'Factura B'),
-            ('Factura C', 'Factura C'),
-            )
+    # TIPO = (
+    #         ('Factura A', 'Factura A'),
+    #         ('Factura B', 'Factura B'),
+    #         ('Factura C', 'Factura C'),
+    #         )
 
     fecha = models.DateField(default=datetime.date.today)
     numero = models.CharField(max_length=10, default='0000000000')
@@ -74,8 +74,8 @@ class Factura(models.Model):
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
-    total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
-    tipo = models.CharField(max_length=200, choices=TIPO)
+    total = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    # tipo = models.CharField(max_length=200, choices=TIPO)
 
     class Meta:
         ordering = ('estado',)

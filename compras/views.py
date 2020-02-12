@@ -121,7 +121,7 @@ def detalle_new(request, pk):
         else:
             print('detalle_formset no es válida')
     else:
-        DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=5)
+        DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=10)
         detalle_formset = DetalleFormSet(instance=factuid)
     args = {}
     args['detalle_formset'] = detalle_formset
@@ -139,7 +139,9 @@ def factura_list(request):
 def factura_detail(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     #factura = Factura.objects.get(pk=pk) #Esto es lo mismo que lo que está arriba pero sin el 404
-    context = {'factura': factura}
+    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=0)
+    detalle_formset = DetalleFormSet(instance=factura)
+    context = {'factura': factura, 'detalle_formset' : detalle_formset}
     template = 'factura/factura_detail.html'
     return render(request, template, context)
 
@@ -156,22 +158,22 @@ def factura_new(request):
         factura_form = FacturaForm()
     args = {}
     args['factura_form'] = factura_form
-    return render(request, 'factura/factura_edit.html', args)
+    return render(request, 'factura/factura_new.html', args)
 
 def factura_edit(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
-    detalle = Detalle.objects.filter(id=factura.id).first()
     if request.method == "POST":
         factura_form = FacturaEditForm(request.POST, instance=factura)
-        detalle_form = DetalleEditForm(request.POST, instance=detalle)
-        if factura_form.is_valid() and detalle_form.is_valid():
+        if factura_form.is_valid():
+            print('factura_form is valid')
             factura = factura_form.save(commit=False)
             factura.save()
-            return redirect('factura_list', pk=factura.pk)
+            return redirect('factura_detail', pk=pk)
+        else:
+            print('factura_form is NOT valid')
     else:
         factura_form = FacturaEditForm(instance=factura)
-        detalle_form = DetalleEditForm(instance=detalle)
-    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_form})
+    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'factura' : factura})
 
 def factura_remove(request, pk):
     factura = get_object_or_404(Factura, pk=pk)

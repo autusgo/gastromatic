@@ -2,25 +2,25 @@
 
 {% block content %}
 <header>
-	EDITAR UNA FACTURA
+	CARGAR UNA NUEVA FACTURA
 </header>
 
 <main>
-<form class="factura-form"  method="POST">{% csrf_token %}
+<form class="factura-form"  method="POST" action="{% url 'factura_new' %}">{% csrf_token %}
 			<div class="caja">
      			<div class="grid-item titulo">DATOS DE LA FACTURA</div>
 
           <div class="grid-item texto">FECHA</div>
-          <div class="grid-item">{{ factura.fecha }}</div>
+          <div class="grid-item">{{ factura_form.fecha }}</div>
           <div class="grid-item texto">NÚMERO</div>
-          <div class="grid-item">{{ factura.numero }}</div>
+          <div class="grid-item">{{ factura_form.numero }}</div>
           <div class="grid-item texto">PROVEEDOR</div>
-          <div class="grid-item">{{ factura.proveedor }}</div>
+          <div class="grid-item">{{ factura_form.proveedor }}</div>
           <div class="grid-item texto">ESTADO</div>
           <div class="grid-item">{{ factura_form.estado }}</div>
 
 			</div>
-		<button class="save btn btn-default">GUARDAR</button>
+		<button class="save btn btn-default">AÑADIR DETALLES</button>
 	</form>
 </main>
 {% endblock %}

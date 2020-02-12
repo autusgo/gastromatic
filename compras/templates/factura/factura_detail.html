@@ -11,7 +11,7 @@
 
   {% endif %}
 
-<form target="_self" class="factura">{% csrf_token %}
+<form target="_self" class="factura">
 			<div class="caja">
      			<div class="grid-item titulo">{{ factura.numero }}
 						{% if user.is_authenticated and factura.estado == 'IMPAGA' %}
@@ -27,14 +27,26 @@
 					{% endif %}
           <div class="grid-item texto">FECHA</div>
           <div class="grid-item date">{{ factura.fecha }}</div>
-					<div class="grid-item texto">TIPO</div>
-					<div class="grid-item">{{ factura.tipo }}</div>
           <div class="grid-item texto">PROVEEDOR</div>
           <div class="grid-item">{{ factura.proveedor}}</div>
           <div class="grid-item texto">TOTAL</div>
           <div class="grid-item">$ {{ factura.total }}</div>
 			</div>
 	</form>
+
+	<form target="_self" class="factura"">
+				{{ detalle_formset.management_form }}
+				<div class="cajita">
+						<div class="grid-item titulo">DETALLE</div>
+
+						{% for field in detalle_formset %}
+						<div class="grid-item texto">PRODUCTO {{ field.producto }}</div>
+
+						<div class="grid-item texto">CANTIDAD {{ field.cantidad }}</div>
+
+						{% endfor %}
+				</div>
+		</form>
 
 </main>
 

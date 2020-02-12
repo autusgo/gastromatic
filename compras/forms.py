@@ -16,7 +16,7 @@ class ProveedorForm(forms.ModelForm):
 class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ['fecha','numero','proveedor', 'estado', 'tipo']
+        fields = ['fecha','numero','proveedor', 'estado']
         total = forms.DecimalField(disabled=True)
 
 class DetalleForm(forms.ModelForm):
@@ -35,8 +35,7 @@ class DetalleEditForm(forms.ModelForm):
 class FacturaEditForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ['fecha','numero','proveedor', 'estado', 'tipo']
-    fecha = forms.DateField(disabled=True)
-    proveedor = forms.CharField(disabled=True)
-    numero = forms.DecimalField(disabled=True)
-    tipo = forms.CharField(disabled=True)
+        fields = ['estado']
+    # fecha = forms.DateField(disabled=True)
+    # proveedor = forms.CharField(disabled=True)
+    # numero = forms.DecimalField(disabled=True)
