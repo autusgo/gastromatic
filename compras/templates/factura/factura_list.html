@@ -6,7 +6,14 @@
 </header>
 
 <main>
-  {% for factura in facturas %}
+
+	<div class="grid-item texto mayus" style="border-top: 0px">
+	<form action="" method="GET">	{{ filter.form }} <input style="font-align: right" type="submit" value="FILTRAR" />
+	</form>
+	</div>
+
+  {% for factura in filter.qs %}
+	
     {% if factura.estado == 'IMPAGA' %}
     <form target="_self"  method="POST" class="factura">{% csrf_token %}
     			<div class="caja">

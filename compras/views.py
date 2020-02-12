@@ -5,7 +5,7 @@ from django.forms import formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
 from django.views.generic import (ListView, DetailView)
-from .filters import ProveedorFilter
+from .filters import ProveedorFilter, FacturaFilter
 
 # PRODUCTOS
 def product_list(request):
@@ -141,8 +141,8 @@ def factura_error(request):
     return render(request, 'factura/factura_error.html')
 
 def factura_list(request):
-    facturas = Factura.objects.all().order_by('fecha')
-    return render(request, 'factura/factura_list.html', {'facturas': facturas})
+    facturas = FacturaFilter(request.GET, queryset=Factura.objects.all())
+    return render(request, 'factura/factura_list.html', {'filter': facturas})
 
 def factura_detail(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
