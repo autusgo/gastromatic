@@ -15,8 +15,7 @@
 			<div class="caja">
      			<div class="grid-item titulo">{{ factura.numero }}
 						{% if user.is_authenticated and factura.estado == 'IMPAGA' %}
-						<div style="text-align:right"><a href="{% url 'factura_edit' pk=factura.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;&nbsp;&nbsp;
-						<a onclick="return confirm('¿Está seguro de que desea eliminar la factura?');" href="{% url 'factura_remove' pk=factura.pk %}"><span class="glyphicon glyphicon-trash"></span></a></div>
+						<div style="text-align:right"><a href="{% url 'factura_edit' pk=factura.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 						{% endif %}
 					</div>
           <div class="grid-item texto">ESTADO</div>

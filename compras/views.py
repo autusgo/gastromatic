@@ -167,6 +167,14 @@ def factura_edit(request, pk):
         if factura_form.is_valid():
             print('factura_form is valid')
             factura = factura_form.save(commit=False)
+            if factura.estado == 'PAGA':
+                nuevadeuda=0
+                proveid=factura.proveedor_id #agarro el id del proveedor desde la factura
+                proveedorinstance=Proveedor.objects.get(id=proveid) #uso el id para levantar el objeto Proveedor y lo guardo en proveedorinstance
+                nuevadeuda=int(proveedorinstance.deuda) #guardo lo que haya ya guardado en la deuda del proveedor en nuevadeuda
+                nuevadeuda-=int(factura.total) #actualizo lo que ya haya sumándole la nueva factura
+                proveedorinstance.deuda=nuevadeuda
+                proveedorinstance.save()
             factura.save()
             return redirect('factura_detail', pk=pk)
         else:
