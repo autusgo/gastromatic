@@ -5,6 +5,7 @@ from django.forms import formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
 from django.views.generic import (ListView, DetailView)
+from .filters import ProveedorFilter
 
 # PRODUCTOS
 def product_list(request):
@@ -46,14 +47,15 @@ def producto_remove(request, pk):
     return redirect('product_list')
 
 #PROVEEDORES
-# def proveedor_list(request):
-#     proveedores = Proveedor.objects.all().order_by('apellido')
-#     return render(request, 'proveedor/proveedor_list.html', {'proveedores': proveedores})
 
-class ProveedorListView(ListView):
-    model = Proveedor
-    template = 'proveedor/proveedor_list.html'
-    proveedores = Proveedor.objects.all()
+def proveedor_list(request):
+    proveedores = ProveedorFilter(request.GET, queryset=Proveedor.objects.all())
+    return render(request, 'proveedor/proveedor_list.html', {'filter': proveedores})
+
+# class ProveedorListView(ListView):
+#     model = Proveedor
+#     template = 'proveedor/proveedor_list.html'
+#     proveedores = Proveedor.objects.all()
 
 def proveedor_detail(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
