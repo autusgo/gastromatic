@@ -34,11 +34,11 @@
 	</form>
 
 	<form target="_self" class="factura"">
-				{{ detalle_formset.management_form }}
+
 				<div class="cajita">
 						<div class="grid-item titulo">DETALLE</div>
 
-						{% for field in detalle_formset %}
+						{% for field in detalles %}
 						<div class="grid-item texto">PRODUCTO {{ field.producto }}</div>
 
 						<div class="grid-item texto">CANTIDAD {{ field.cantidad }}</div>

@@ -139,9 +139,9 @@ def factura_list(request):
 def factura_detail(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     #factura = Factura.objects.get(pk=pk) #Esto es lo mismo que lo que está arriba pero sin el 404
-    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=0)
-    detalle_formset = DetalleFormSet(instance=factura)
-    context = {'factura': factura, 'detalle_formset' : detalle_formset}
+    detalles = Detalle.objects.filter(factura_id=pk)
+    print(detalles)
+    context = {'factura': factura, 'detalles' : detalles}
     template = 'factura/factura_detail.html'
     return render(request, template, context)
 
