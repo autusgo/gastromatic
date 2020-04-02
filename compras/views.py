@@ -1,14 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
-from django.forms import formset_factory
+from django.forms import modelformset_factory, formset_factory, inlineformset_factory
 from django.urls import reverse
 import time
+from django.views.generic import (ListView, DetailView)
+from .filters import ProveedorFilter, FacturaFilter, ProductoFilter
 
 # PRODUCTOS
+# def product_list(request):
+#     productos = Producto.objects.all().order_by('nombre')
+#     return render(request, 'producto/product_list.html', {'productos': productos})
+
 def product_list(request):
-    productos = Producto.objects.all().order_by('nombre')
-    return render(request, 'producto/product_list.html', {'productos': productos})
+    productos = ProductoFilter(request.GET, queryset=Producto.objects.all())
+    return render(request, 'producto/product_list.html', {'filter': productos})
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -31,8 +37,6 @@ def producto_edit(request, pk):
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             producto = form.save(commit=False)
-            #post.author = request.user
-            #post.published_date = timezone.now()
             producto.save()
             return redirect('producto_detail', pk=producto.pk)
     else:
@@ -45,9 +49,15 @@ def producto_remove(request, pk):
     return redirect('product_list')
 
 #PROVEEDORES
+
 def proveedor_list(request):
-    proveedores = Proveedor.objects.all().order_by('apellido')
-    return render(request, 'proveedor/proveedor_list.html', {'proveedores': proveedores})
+    proveedores = ProveedorFilter(request.GET, queryset=Proveedor.objects.all())
+    return render(request, 'proveedor/proveedor_list.html', {'filter': proveedores})
+
+# class ProveedorListView(ListView):
+#     model = Proveedor
+#     template = 'proveedor/proveedor_list.html'
+#     proveedores = Proveedor.objects.all()
 
 def proveedor_detail(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
@@ -89,77 +99,108 @@ def proveedor_remove(request, pk):
 #def detalle_item(request, pk):
     #producto = get_object_or_404(Producto, pk=pk)
     #precio_total = get_object_or_404(Detalle, pk=pk)
+def detalle_new(request, pk):
+    factuid = Factura.objects.get(pk=pk)
+    DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, min_num=1, validate_min=True)
+    if request.method == "POST":
+        detalle_formset = DetalleFormSet(request.POST, instance=factuid)
+        if detalle_formset.is_valid():
+            detalles = detalle_formset.save(commit=False)
+            detalles_tot=0.00
+            nuevostock=0
+            for detalle in detalles:
+                subtotal=detalle.total_linea()
+                detalle.subtotal=subtotal
+                detalles_tot+=float(subtotal)
+                detalle.save()
+                idpr=detalle.producto_id #tengo el id del producto que quiero modificar
+                prodid=Producto.objects.get(id=idpr) #busco el producto por ese id y guardo la instancia en proid
+                nuevostock=int(prodid.stock)
+                nuevostock+=int(detalle.cantidad)
+                prodid.stock=nuevostock
+                prodid.save()
+            factuid.total=detalles_tot
+            proveid=factuid.proveedor_id #agarro el id del proveedor desde la factura
+            proveedorinstance=Proveedor.objects.get(id=proveid) #uso el id para levantar el objeto Proveedor y lo guardo en proveedorinstance
+            nuevadeuda=int(proveedorinstance.deuda) #guardo lo que haya ya guardado en la deuda del proveedor en nuevadeuda
+            nuevadeuda+=int(factuid.total) #actualizo lo que ya haya sumándole la nueva factura
+            proveedorinstance.deuda=nuevadeuda
+            proveedorinstance.save()
+            factuid.save()
+            return redirect('factura_detail', pk=pk)
+        else:
+            print('detalle_formset no es válida')
+    else:
+        DetalleFormSet = inlineformset_factory(Factura, Detalle, fields=('producto', 'cantidad',), can_delete=False, extra=10)
+        detalle_formset = DetalleFormSet(instance=factuid)
+    args = {}
+    args['detalle_formset'] = detalle_formset
+    return render(request, 'factura/detalle_new.html', args)
+
 
 #FACTURAS
 def factura_error(request):
     return render(request, 'factura/factura_error.html')
 
 def factura_list(request):
-    facturas = Factura.objects.all().order_by('fecha')
-    return render(request, 'factura/factura_list.html', {'facturas': facturas})
+    facturas = FacturaFilter(request.GET, queryset=Factura.objects.all())
+    return render(request, 'factura/factura_list.html', {'filter': facturas})
 
 def factura_detail(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     #factura = Factura.objects.get(pk=pk) #Esto es lo mismo que lo que está arriba pero sin el 404
-    context = {'factura': factura}
+    detalles = Detalle.objects.filter(factura=pk)
+    context = {'factura': factura, 'detalles' : detalles}
     template = 'factura/factura_detail.html'
     return render(request, template, context)
 
 def factura_new(request):
+    DetalleFormSet = modelformset_factory(Detalle, fields=('producto','cantidad'), min_num=1, validate_min=True, extra=2)
     if request.method == "POST":
         factura_form = FacturaForm(request.POST)
-        detalle_form = DetalleForm(request.POST)
-        # producto_form = ProductoForm(request.POST)
-        # print(producto_form)
-        if factura_form.is_valid() and detalle_form.is_valid():
+        detalle_formset = DetalleFormSet(request.POST)
+        if factura_form.is_valid() and detalle_formset.is_valid():
             factura = factura_form.save()
-            # producto = producto_form.save()
-            detalle = detalle_form.save(False)
-            detalle.factura=factura
-            detalle.subtotal=round(detalle.producto.precio_unitario * detalle.cantidad, 2)
-            detalle.save()
-            factura.total=detalle.subtotal
+            detalles = detalle_formset.save(commit=False)
+            factuid = factura.id
+            for det in detalles:
+                det.factura = factura
+                det.subtotal = det.total_linea()
+                det.save()
+            deta = get_object_or_404(Detalle, factura_id=factuid)
+            factura.total = deta.total_detalle(factuid)
             factura.save()
             return redirect('factura_detail', pk=factura.pk)
-        else:
-            print('alguna form no es válida')
     else:
         factura_form = FacturaForm()
-        detalle_form = DetalleForm()
-    args = {}
-    # args.update(csrf(request))
-    args['factura_form'] = factura_form
-    args['detalle_form'] = detalle_form
-    return render(request, 'factura/factura_edit.html', args)
+        detalle_formset=DetalleFormSet(queryset=Detalle.objects.none())
+    return render(request, 'factura/factura_new.html', {'factura_form': factura_form, 'detalle_formset': detalle_formset} )
+
 
 def factura_edit(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
-    detalle = Detalle.objects.filter(id=factura.id).first()
     if request.method == "POST":
         factura_form = FacturaEditForm(request.POST, instance=factura)
-        detalle_form = DetalleEditForm(request.POST, instance=detalle)
-        if factura_form.is_valid() and detalle_form.is_valid():
+        if factura_form.is_valid():
+            print('factura_form is valid')
             factura = factura_form.save(commit=False)
+            if factura.estado == 'PAGA':
+                nuevadeuda=0
+                proveid=factura.proveedor_id #agarro el id del proveedor desde la factura
+                proveedorinstance=Proveedor.objects.get(id=proveid) #uso el id para levantar el objeto Proveedor y lo guardo en proveedorinstance
+                nuevadeuda=int(proveedorinstance.deuda) #guardo lo que haya ya guardado en la deuda del proveedor en nuevadeuda
+                nuevadeuda-=int(factura.total) #actualizo lo que ya haya sumándole la nueva factura
+                proveedorinstance.deuda=nuevadeuda
+                proveedorinstance.save()
             factura.save()
-            return redirect('factura_list', pk=factura.pk)
+            return redirect('factura_detail', pk=pk)
+        else:
+            print('factura_form is NOT valid')
     else:
         factura_form = FacturaEditForm(instance=factura)
-        detalle_form = DetalleEditForm(instance=detalle)
-    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'detalle_form': detalle_form})
+    return render(request, 'factura/factura_edit.html', {'factura_form': factura_form, 'factura' : factura})
 
 def factura_remove(request, pk):
     factura = get_object_or_404(Factura, pk=pk)
     factura.delete()
     return redirect('factura_list')
-
- # def detalle_edit(request, pk):
- #     detalle = get_object_or_404(Detalle, pk=pk)
- #     if request.method == "POST":
- #         form_det = DetalleForm(request.POST, instance=detalle)
- #         if form_det.is_valid():
- #             detalle = form_det.save(commit=False)
- #             detalle.save()
- #             return redirect('factura_detail', pk=detalle.pk)
- #     else:
- #         form_det = DetalleForm(instance=detalle)
- #     return render(request, 'factura/factura_edit.html', {'form_det': form_det})

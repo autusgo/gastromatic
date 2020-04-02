@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from django.conf import settings
 from decimal import Decimal
 from localflavor.ar.forms import ARCUITField
@@ -30,9 +29,9 @@ class Producto(models.Model):
         index_together = (('tipo', 'nombre'))
 
     def __str__(self):
-        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
+        return '{}'.format(self.nombre)
     def __unicode__(self):
-        return '{} {} {}'.format(self.nombre, self.precio_unitario, self.stock)
+        return '{}'.format(self.nombre)
 
 #PROVEEDORES
 class Proveedor(models.Model):
@@ -43,6 +42,7 @@ class Proveedor(models.Model):
     teléfono = models.CharField(max_length=10)
     correo_electrónico = models.EmailField(max_length=100)
     dirección = models.CharField(max_length=200)
+    deuda = models.DecimalField(max_digits=9 , decimal_places=2, default=0)
 
     class Meta:
         verbose_name_plural = "Proveedores"
@@ -60,19 +60,27 @@ class Factura(models.Model):
     ESTADO = (
             ('PAGA', 'PAGA'),
             ('IMPAGA', 'IMPAGA'),
-            #('PARCIAL', 'PARCIAL'),
             )
+    # TIPO = (
+    #         ('Factura A', 'Factura A'),
+    #         ('Factura B', 'Factura B'),
+    #         ('Factura C', 'Factura C'),
+    #         )
 
     fecha = models.DateField(default=datetime.date.today)
-    numero = models.CharField(max_length=10, default='0000000000')
+    numero = models.IntegerField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     #productos = models.ManyToManyField(Producto, null=True, blank=True)
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
     estado = models.CharField(max_length=200, choices=ESTADO, default='IMPAGA')
     fecha_de_pago = MonitorField(monitor='estado', when=['PAGA'], verbose_name=_(u'Fecha de pago'), blank=True, null=True, default=None)
-    total = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+    total = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    # tipo = models.CharField(max_length=200, choices=TIPO)
 
-    # @property
+    class Meta:
+        ordering = ('estado',)
+        index_together = (('proveedor', 'estado'))
+
     # def total_detalles(self):
     #     total_detalles = self.detalle.total_linea
     #     return round(total_detalles, 2)
@@ -84,15 +92,20 @@ class Factura(models.Model):
 
 #DETALLE
 class Detalle(models.Model):
-    factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
-    subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=9, decimal_places=2, default=0)
 
-    @property
     def total_linea(self):
         total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
         return round(total_linea, 2)
+
+    def total_detalle(self, factuid):
+        total_detalle = 0
+        for det in Detalle.objects.filter(factura=factuid):
+            total_detalle += self.subtotal
+        return round(total_detalle, 2)
 
 
     def __unicode__(self):

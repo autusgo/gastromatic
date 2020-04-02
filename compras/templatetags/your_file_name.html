@@ -6,20 +6,11 @@
 </header>
 
 <main>
+	{% load admin_list %}
 
+	{% for proveedor in proveedor_list|order_by:"nombre,-deuda"
 
-
-	<form method="GET">
-		<div class="busqueda_pro">
-		 <div class="box1" value="APELLIDO">APELLIDO</div>
-		 <div class="box2" value="PROVEEDOR">{{ filter.form.apellido }}</div>
-		 <div class="box3"><input class="save btn btn-default"  type="submit" value="FILTRAR" /></div>
-		</div>
-	</form>
-
-  {% for proveedor in filter.qs %}
-
-<form target="_self"  method="POST" class="proveedor">
+<form target="_self"  method="POST" class="proveedor">{% csrf_token %}
 			<div class="caja">
      			<div class="grid-item titulo mayus"><a href="{% url 'proveedor_detail' pk=proveedor.pk %}"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ proveedor.apellido }}</a></div>
 

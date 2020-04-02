@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
+# from .views import ProveedorListView
 
 urlpatterns = [
+    # path('', ProveedorListView.as_view(), name="proveedor_list"),
     path('', views.proveedor_list, name='proveedor_list'),
     path('proveedor/<int:pk>/', views.proveedor_detail, name='proveedor_detail'),
     path('proveedor/new/', views.proveedor_new, name='proveedor_new'),

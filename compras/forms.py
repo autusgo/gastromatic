@@ -19,11 +19,11 @@ class FacturaForm(forms.ModelForm):
         fields = ['fecha','numero','proveedor', 'estado']
         total = forms.DecimalField(disabled=True)
 
-class DetalleForm(forms.ModelForm):
-    class Meta:
-        model = Detalle
-        fields = ['producto','cantidad']
-    #subtotal = forms.DecimalField(disabled=True)
+# class DetalleFormSet(forms.ModelForm):
+#     class Meta:
+#         model = Detalle
+#         fields = ['producto','cantidad']
+#     subtotal = forms.DecimalField(disabled=True)
 
 class DetalleEditForm(forms.ModelForm):
     class Meta:
@@ -35,7 +35,7 @@ class DetalleEditForm(forms.ModelForm):
 class FacturaEditForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ['fecha','numero','proveedor', 'estado']
-    fecha = forms.DateField(disabled=True)
-    proveedor = forms.CharField(disabled=True)
-    numero = forms.DecimalField(disabled=True)
+        fields = ['estado']
+    # fecha = forms.DateField(disabled=True)
+    # proveedor = forms.CharField(disabled=True)
+    # numero = forms.DecimalField(disabled=True)

@@ -1,0 +1,42 @@
+{% extends 'compras/base.html' %}
+{% block content %}
+
+<header>
+	CARGAR DETALLES DE LA FACTURA
+</header>
+
+<main>
+  <form class="factura-form"  method="POST">{% csrf_token %}
+        {{ detalle_formset.management_form }}
+  			<div class="cajita">
+       			<div class="grid-item titulo">DETALLE</div>
+
+            {% for field in detalle_formset %}
+            <div class="grid-item texto">PRODUCTO {{ field.producto }}</div>
+
+            <div class="grid-item texto">CANTIDAD {{ field.cantidad }}</div>
+
+            {% endfor %}
+  			</div>
+  		<button id='save-btn' class="save btn btn-default">GUARDAR</button>
+  	</form>
+</main>
+<script>
+  console.log('script')
+  var hasSaved = false
+
+  document.getElementById('save-btn').addEventListener('click', function(event) {
+   console.log('btn click')
+   hasSaved = true
+  })
+
+  window.onbeforeunload = function(event) {
+   if (hasSaved) {
+    console.log('has saved')
+    return
+   }
+
+   return "Si sale de esta vista sin guardar, la factura quedará vacía";
+  }
+ </script>
+{% endblock %}
