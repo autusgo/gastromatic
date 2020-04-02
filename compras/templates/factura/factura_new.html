@@ -7,6 +7,7 @@
 
 <main>
 <form class="factura-form"  method="POST" action="{% url 'factura_new' %}">{% csrf_token %}
+						{{ detalle_formset.management_form }}
 			<div class="caja">
      			<div class="grid-item titulo">DATOS DE LA FACTURA</div>
 
@@ -18,9 +19,13 @@
           <div class="grid-item">{{ factura_form.proveedor }}</div>
           <div class="grid-item texto">ESTADO</div>
           <div class="grid-item">{{ factura_form.estado }}</div>
+					{% for detalle in detalle_formset %}
+					<div class="grid-item">{{ detalle.cantidad }}</div>
+					<div class="grid-item">{{ detalle.producto }}</div>
+					{% endfor %}
 
 			</div>
-		<button class="save btn btn-default">AÑADIR DETALLES</button>
+		<button class="save btn btn-default">GUARDAR</button>
 	</form>
 </main>
 {% endblock %}

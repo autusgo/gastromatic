@@ -39,9 +39,9 @@
 						<div class="grid-item titulo">DETALLE</div>
 
 						{% for field in detalles %}
-						<div class="grid-item texto">PRODUCTO {{ field.producto }}</div>
+						<div class="grid-item" style="padding-left:70px"> {{ field.cantidad }}</div>
 
-						<div class="grid-item texto">CANTIDAD {{ field.cantidad }}</div>
+						<div class="grid-item" > {{ field.producto }}</div>
 
 						{% endfor %}
 				</div>

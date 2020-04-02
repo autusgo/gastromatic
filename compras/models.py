@@ -38,7 +38,7 @@ class Proveedor(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
-    CUIT = models.IntegerField(max_length=13)
+    CUIT = models.CharField(max_length=13)
     teléfono = models.CharField(max_length=10)
     correo_electrónico = models.EmailField(max_length=100)
     dirección = models.CharField(max_length=200)
@@ -68,7 +68,7 @@ class Factura(models.Model):
     #         )
 
     fecha = models.DateField(default=datetime.date.today)
-    numero = models.IntegerField(max_length=13)
+    numero = models.IntegerField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     #productos = models.ManyToManyField(Producto, null=True, blank=True)
     #detalle = models.ForeignKey(Detalle, null=True, on_delete=models.CASCADE)
@@ -92,14 +92,20 @@ class Factura(models.Model):
 
 #DETALLE
 class Detalle(models.Model):
-    factura = models.ForeignKey(Factura, null=True, on_delete=models.CASCADE)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
-    subtotal = models.DecimalField(max_digits=9 , null=True, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=9, decimal_places=2, default=0)
 
     def total_linea(self):
         total_linea = round(self.producto.precio_unitario * self.cantidad, 2)
         return round(total_linea, 2)
+
+    def total_detalle(self, factuid):
+        total_detalle = 0
+        for det in Detalle.objects.filter(factura=factuid):
+            total_detalle += self.subtotal
+        return round(total_detalle, 2)
 
 
     def __unicode__(self):
